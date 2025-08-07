@@ -1,0 +1,8 @@
+name: PKHackathon
+version: '1.0.0'
+main: me.justahuman.pk_hackathon.PKHackathon
+api-version: '1.21'
+load: STARTUP
+authors: [ JustAHuman ]
+depend: [ ProjectKorra ]
+website: https://github.com/JustAHuman-xD/PKHackathon
