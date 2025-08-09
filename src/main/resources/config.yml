@@ -1,0 +1,7 @@
+# If someone activates a dash while not holding any movement keys by using their sprint key, should it default to a forward dash?
+# If true, the dash will be forward; if false, it will not dash at all.
+empty-sprint-dash-forward: true
+
+# For common properties of all dashes
+Dash:
+  PushParticles: 30

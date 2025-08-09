@@ -1,4 +1,95 @@
 package me.justahuman.pk_hackathon.ability.waterbending;
 
-public class WaterDash {
+import com.projectkorra.projectkorra.BendingPlayer;
+import com.projectkorra.projectkorra.ability.WaterAbility;
+import com.projectkorra.projectkorra.attribute.Attribute;
+import lombok.Getter;
+import me.justahuman.pk_hackathon.ability.DashAbility;
+import me.justahuman.pk_hackathon.util.DashDirection;
+import org.bukkit.Input;
+import org.bukkit.Particle;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
+import org.bukkit.util.BoundingBox;
+import org.bukkit.util.Vector;
+
+@Getter
+@SuppressWarnings("UnstableApiUsage")
+public class WaterDash extends WaterAbility implements DashAbility {
+    @Attribute(Attribute.COOLDOWN)
+    private long cooldown = getBaseCooldown();
+    @Attribute(Attribute.SELF_PUSH)
+    private double speed = getBaseSpeed();
+
+    private final Input input;
+    private final DashDirection direction;
+
+    public WaterDash(Player player, Input input, DashDirection direction) {
+        super(player);
+        this.input = input;
+        this.direction = direction;
+        if (canDash(this)) {
+            start();
+            dashEffect();
+            adjustVelocity();
+        }
+    }
+
+    @Override
+    public void dashEffect() {
+        Player player = getPlayer();
+        World world = player.getWorld();
+        BoundingBox box = player.getBoundingBox();
+        Vector pushedDirection = getVelocityDirection().multiply(-1);
+        for (int i = 0; i < particleCount(); i++) {
+            Vector offset = new Vector((Math.random() - 0.5) * 0.8 * box.getWidthX(), (Math.random() - 0.5) * 0.8 * box.getHeight(), (Math.random() - 0.5) * 0.8 * box.getWidthZ());
+            offset.add(new Vector(0, box.getHeight() / 2, 0));
+            if (player.isInWaterOrRainOrBubbleColumn()) {
+                world.spawnParticle(Particle.BUBBLE, player.getLocation().add(offset).add(Math.random() * pushedDirection.getX(), Math.random() * pushedDirection.getY(), Math.random() * pushedDirection.getZ()), 1);
+            } else {
+                world.spawnParticle(Particle.SPLASH, player.getLocation().add(offset), 0, pushedDirection.getX(), pushedDirection.getY(), pushedDirection.getZ(), 0.1 + (Math.random() * 0.25));
+            }
+        }
+        playWaterbendingSound(getLocation());
+    }
+
+    @Override
+    public void progress() {
+        // TODO: Implement refilling water bottles/buckets when dashing through water
+        remove();
+        postDash();
+    }
+
+    @Override
+    public boolean inAir() {
+        return player.isInRain() || DashAbility.super.inAir();
+    }
+
+    @Override
+    public int getPitchRestriction() {
+        // TODO: make this configurable
+        return player.isInWaterOrRainOrBubbleColumn() ? -1 : DashAbility.super.getPitchRestriction();
+    }
+
+    public double getSpeed() {
+        // TODO: make this configurable
+        return player.isInWaterOrRainOrBubbleColumn() ? speed * 2 : speed;
+    }
+
+    @Override
+    public long getCooldown() {
+        // TODO: Make this configurable
+        return player.isInWaterOrRainOrBubbleColumn() ? (long) (cooldown * 0.5) : cooldown;
+    }
+
+    @Override
+    public String getName() {
+        return "WaterDash";
+    }
+
+    @Override
+    public boolean tryDash(BendingPlayer player, Input input, DashDirection direction) {
+        // TODO: Require water in inventory to dash outside of water
+        return new WaterDash(player.getPlayer(), input, direction).isStarted();
+    }
 }

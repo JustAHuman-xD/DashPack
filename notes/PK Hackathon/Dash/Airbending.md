@@ -10,6 +10,6 @@ Display uses airbending particles as if its a airblast/airsuction
 
 [[Combat]]
 	**AirBreak (Combo)**
-	TBA
+	Stop all velocity mid-air and reset fall damage
 	**AirCrash (Combo)**
-	TBA
+	e

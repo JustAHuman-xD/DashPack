@@ -1,0 +1,91 @@
+Abilities:
+  Air:
+    AirDash:
+      Enabled: true
+      Additive: true
+      Speed: 2.25
+      PitchRestriction: -1
+      InAir: true
+      InWater: false
+      AutoSprint: true
+      Cooldown: 1200
+      Particles: 3
+    AirBreak:
+      Enabled: true
+      YSpeed: 0.1
+      ResetFallDistance: true
+      Cooldown: 7500
+    AirCrash:
+      Enabled: true
+      DashTime: 1500
+      PushFactor: 1.5
+      DamageFactor: 1.0
+      Cooldown: 20000
+  Fire:
+    FireDash:
+      Enabled: true
+      Additive: true
+      Speed: 1.75
+      PitchRestriction: 35
+      InAir: true
+      InWater: false
+      AutoSprint: true
+      Cooldown: 3000
+      Particles: 25
+  Water:
+    WaterDash:
+      Enabled: true
+      Additive: true
+      Speed: 1.75
+      PitchRestriction: 25
+      InAir: false
+      InWater: true
+      AutoSprint: true
+      Cooldown: 2000
+      Particles: 40
+  Earth:
+    EarthDash:
+      Enabled: true
+      Additive: true
+      Speed: 1.5
+      PitchRestriction: 25
+      InAir: false
+      InWater: false
+      AutoSprint: true
+      Cooldown: 2000
+      Particles: 35
+    EarthLaunch:
+      Enabled: true
+      Additive: true
+      PushFactor: 4.5
+      Cooldown: 20000
+    EarthSlam:
+      Enabled: true
+      SelectRange: 4
+      PushRange: 30
+      Height: 6
+      Width: 6
+      Damage: 5
+      Speed: 20
+      PushFactor: 1
+      MaxHits: 5
+      CanHitSelf: false
+      Cooldown: 15000
+    EarthCrash:
+      Enabled: true
+      DashTime: 1500
+      RangeFactor: 0.5
+      PushFactor: 1.5
+      DamageFactor: 1.0
+      Cooldown: 20000
+  Chi:
+    ChiDash:
+      Enabled: true
+      Additive: true
+      Speed: 1.75
+      PitchRestriction: -1
+      InAir: false
+      InWater: true
+      AutoSprint: true
+      Cooldown: 800
+      Particles: 3

@@ -1,0 +1,59 @@
+Board:
+  Extras:
+    Dash: white
+Abilities:
+  Air:
+    AirDash:
+      Description: TBA
+      Instructions: TBA
+    Combo:
+      AirBreak:
+        Description: TBA
+        Instructions: AirSuction (Left click) > AirSuction (Left click) > AirDash
+      AirCrash:
+        Description: TBA
+        Instructions: Dash (Down) > AirBurst (From fall)
+  Earth:
+    EarthDash:
+      Description: TEMPORARY, normal dash controls and specifically when middair, double dash down holding catapult to plummet (used for earth crash)
+      Instructions: TBA
+    Combo:
+      EarthCrash:
+        Description: TBA
+        Instructions: Dash (Down) > Shockwave (From fall)
+      EarthLaunch:
+        Description: TBA
+        Instructions: Catapult (Right click block) > Catapult (Right click block) > EarthDash
+      EarthSlam:
+        Description: TBA
+        Instructions: EarthSmash (Right click block) > EarthSmash (Right click block) > EarthDash (Looking at raised earth)
+  Fire:
+    FireDash:
+      Description: TBA
+      Instructions: TBA
+    Combo:
+      LightningStep:
+        Description: TBA
+        Instructions: TBA
+  Water:
+    WaterDash:
+      Description: TBA
+      Instructions: TBA
+    Combo:
+      WaterRush:
+        Description: TBA
+        Instructions: TBA
+      WaterWake:
+        Description: TBA
+        Instructions: TBA
+  Chi:
+    ChiDash:
+      Description: TBA
+      Instructions: TBA
+    Combo:
+      DashBlitz:
+        Description: TBA
+        Instructions: TBA
+      DashSlam:
+        Description: TBA
+        Instructions: TBA
