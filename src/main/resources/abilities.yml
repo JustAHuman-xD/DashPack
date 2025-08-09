@@ -18,6 +18,7 @@ Abilities:
     AirCrash:
       Enabled: true
       DashTime: 1500
+      RangeFactor: 0.5
       PushFactor: 1.5
       DamageFactor: 1.0
       Cooldown: 20000
@@ -34,7 +35,7 @@ Abilities:
       Particles: 25
     LightningStep:
       Enabled: true
-      Cooldown: 25000
+      Cooldown: 15000
   Water:
     WaterDash:
       Enabled: true

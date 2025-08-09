@@ -1,5 +1,6 @@
 package me.justahuman.pk_hackathon.ability.earthbending.combo;
 
+import com.projectkorra.projectkorra.ability.CoreAbility;
 import com.projectkorra.projectkorra.ability.EarthAbility;
 import com.projectkorra.projectkorra.ability.util.ComboManager;
 import com.projectkorra.projectkorra.attribute.Attribute;
@@ -55,8 +56,11 @@ public class EarthCrash extends EarthAbility implements Listener, PlayerLocation
     private double pushFactor = getDouble("PushFactor");
     private double damageFactor = getDouble("DamageFactor");
 
-    public EarthCrash(Player player, long dashTime) {
+    private final Ripple ripple;
+
+    public EarthCrash(Player player, Ripple ripple, long dashTime) {
         super(player);
+        this.ripple = ripple;
         if (dashTime <= this.dashTime && bPlayer.canBendIgnoreBinds(this)) {
             start();
         }
@@ -75,27 +79,38 @@ public class EarthCrash extends EarthAbility implements Listener, PlayerLocation
     @EventHandler
     public void onRipple(AbilityRecalculateAttributeEvent event) {
         if (event.getAbility() instanceof Ripple ripple) {
-            ArrayList<ComboManager.AbilityInformation> recent = ComboManager.getRecentlyUsedAbilities(ripple.getPlayer(), 1);
-            if (!recent.isEmpty() && recent.get(0).equalsWithoutTime(COMBO_INFO) ) {
-                EarthCrash crash = new EarthCrash(ripple.getPlayer(), System.currentTimeMillis() - recent.get(0).getTime());
-                if (crash.isStarted()) {
-                    switch (event.getAttribute()) {
-                        case Attribute.RANGE -> event.addModification(AttributeModification.of(AttributeModifier.MULTIPLICATION, crash.rangeFactor, RANGE_MODIFIER));
-                        case Attribute.DAMAGE -> event.addModification(AttributeModification.of(AttributeModifier.MULTIPLICATION, crash.damageFactor, DAMAGE_MODIFIER));
-                        case Attribute.KNOCKBACK -> event.addModification(AttributeModification.of(AttributeModifier.MULTIPLICATION, crash.pushFactor, KNOCKBACK_MODIFIER));
-                    }
+            EarthCrash crash = null;
+            for (EarthCrash earthCrash : CoreAbility.getAbilities(ripple.getPlayer(), EarthCrash.class)) {
+                if (earthCrash.ripple.equals(ripple)) {
+                    crash = earthCrash;
+                    break;
+                }
+            }
 
-                    try {
-                        ripple.getLocations().clear();
-                        if (INITIALIZE_LOCATIONS != null) {
-                            INITIALIZE_LOCATIONS.invoke(ripple);
-                            ripple.setMaxStep(ripple.getLocations().size());
-                        } else {
-                            throw new IllegalStateException("EarthCrash started when no Ripple#initializeLocations method was found");
-                        }
-                    } catch (Throwable e) {
-                        e.printStackTrace();
+            if (crash == null) {
+                ArrayList<ComboManager.AbilityInformation> recent = ComboManager.getRecentlyUsedAbilities(ripple.getPlayer(), 1);
+                if (!recent.isEmpty() && recent.get(0).equalsWithoutTime(COMBO_INFO) ) {
+                    new EarthCrash(ripple.getPlayer(), ripple, System.currentTimeMillis() - recent.get(0).getTime());
+                }
+            }
+
+            if (crash != null && crash.isStarted()) {
+                switch (event.getAttribute()) {
+                    case Attribute.RANGE -> event.addModification(AttributeModification.of(AttributeModifier.MULTIPLICATION, crash.rangeFactor, RANGE_MODIFIER));
+                    case Attribute.DAMAGE -> event.addModification(AttributeModification.of(AttributeModifier.MULTIPLICATION, crash.damageFactor, DAMAGE_MODIFIER));
+                    case Attribute.KNOCKBACK -> event.addModification(AttributeModification.of(AttributeModifier.MULTIPLICATION, crash.pushFactor, KNOCKBACK_MODIFIER));
+                }
+
+                try {
+                    ripple.getLocations().clear();
+                    if (INITIALIZE_LOCATIONS != null) {
+                        INITIALIZE_LOCATIONS.invoke(ripple);
+                        ripple.setMaxStep(ripple.getLocations().size());
+                    } else {
+                        throw new IllegalStateException("EarthCrash started when no Ripple#initializeLocations method was found");
                     }
+                } catch (Throwable e) {
+                    e.printStackTrace();
                 }
             }
         }
