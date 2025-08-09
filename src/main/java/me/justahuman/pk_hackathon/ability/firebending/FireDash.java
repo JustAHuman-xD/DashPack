@@ -7,6 +7,7 @@ import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.util.ParticleEffect;
 import lombok.Getter;
 import me.justahuman.pk_hackathon.ability.DashAbility;
+import me.justahuman.pk_hackathon.ability.firebending.combo.LightningStep;
 import me.justahuman.pk_hackathon.util.DashDirection;
 import org.bukkit.Input;
 import org.bukkit.entity.Player;
@@ -42,7 +43,7 @@ public class FireDash extends FireAbility implements DashAbility {
         for (int i = 0; i < particleCount(); i++) {
             Vector offset = new Vector((Math.random() - 0.5) * 0.8 * box.getWidthX(), (Math.random() - 0.5) * 0.8 * box.getHeight(), (Math.random() - 0.5) * 0.8 * box.getWidthZ());
             offset.add(new Vector(0, box.getHeight() / 2, 0));
-            effect.display(player.getLocation().add(offset), 0, pushedDirection.getX(), pushedDirection.getY(), pushedDirection.getZ(), 0.1 + (Math.random() * 0.25));
+            effect.display(player.getLocation().add(offset), 0, pushedDirection.getX(), pushedDirection.getY(), pushedDirection.getZ(), 0.2 + (Math.random() * 0.25));
         }
         playFirebendingSound(getLocation());
     }
@@ -54,6 +55,7 @@ public class FireDash extends FireAbility implements DashAbility {
 
     @Override
     public boolean tryDash(BendingPlayer player, Input input, DashDirection direction) {
-        return new FireDash(player.getPlayer(), input, direction).isStarted();
+        return usingCombo(player, () -> new LightningStep(player.getPlayer()), LightningStep.COMBO_INFO, LightningStep.COMBO_INFO)
+                || new FireDash(player.getPlayer(), input, direction).isStarted();
     }
 }

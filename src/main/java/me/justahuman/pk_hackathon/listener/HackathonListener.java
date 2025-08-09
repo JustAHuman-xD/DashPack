@@ -48,6 +48,10 @@ public class HackathonListener implements Listener {
     public void onDashInput(PlayerInputEvent event) {
         Player player = event.getPlayer();
         BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
+        if (bPlayer == null) {
+            return;
+        }
+
         List<Element> elements = bPlayer.getElements();
         if (elements.isEmpty()) {
             return;

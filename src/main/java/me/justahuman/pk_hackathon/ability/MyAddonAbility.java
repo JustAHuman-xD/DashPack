@@ -1,5 +1,6 @@
 package me.justahuman.pk_hackathon.ability;
 
+import com.projectkorra.projectkorra.Element;
 import com.projectkorra.projectkorra.ability.Ability;
 import com.projectkorra.projectkorra.ability.AddonAbility;
 import com.projectkorra.projectkorra.configuration.ConfigManager;
@@ -29,7 +30,11 @@ public interface MyAddonAbility extends Ability, AddonAbility {
     // ** MyAddonAbility methods ** //
 
     default String configPath() {
-        return "Abilities." + getElement().getName() + "." + getName() + ".";
+        String elementName = getElement().getName();
+        if (getElement() instanceof Element.SubElement sub) {
+            elementName = sub.getParentElement().getName();
+        }
+        return "Abilities." + elementName + "." + getName() + ".";
     }
 
     default int getInt(String path) {

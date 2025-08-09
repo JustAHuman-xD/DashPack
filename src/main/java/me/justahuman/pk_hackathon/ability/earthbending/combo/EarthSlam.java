@@ -37,14 +37,16 @@ public class EarthSlam extends EarthAbility implements AddonComboAbility {
     private double height = getDouble("Height");
     @Attribute(Attribute.WIDTH)
     private double width = getDouble("Width");
-    @Attribute(Attribute.DAMAGE)
-    private double damage = getDouble("Damage");
-    @Attribute(Attribute.SPEED)
-    private double speed = getDouble("Speed");
-    @Attribute(Attribute.KNOCKBACK)
-    private double pushFactor = getDouble("PushFactor");
     @Attribute(Attribute.RANGE)
     private double pushRange = getDouble("PushRange");
+    @Attribute(Attribute.SPEED)
+    private double speed = getDouble("Speed");
+    private boolean gravity = getBoolean("Gravity");
+    @Attribute(Attribute.DAMAGE)
+    private double damage = getDouble("Damage");
+    @Attribute(Attribute.KNOCKBACK)
+    private double knockback = getDouble("Knockback");
+    private double hitRange = getDouble("HitRange");
     private int maxHits = (int) getDouble("MaxHits");
     private boolean canHitSelf = getBoolean("CanHitSelf");
 
@@ -151,6 +153,11 @@ public class EarthSlam extends EarthAbility implements AddonComboAbility {
             Block pushed = block.getRelative(slamDirection);
             if (isTransparent(pushed) && !pushed.isLiquid()) {
                 GeneralMethods.breakBlock(pushed);
+                Block below = pushed.getRelative(BlockFace.DOWN);
+                if (gravity && isTransparent(below) && !below.isLiquid()) {
+                    GeneralMethods.breakBlock(below);
+                    pushed = below;
+                }
             } else {
                 continue;
             }
@@ -182,14 +189,14 @@ public class EarthSlam extends EarthAbility implements AddonComboAbility {
             BoundingBox box = BoundingBox.of(min, max);
             location = box.getCenter().toLocation(min.getWorld());
 
-            for (Entity entity : min.getWorld().getNearbyEntities(box)) {
+            for (Entity entity : min.getWorld().getNearbyEntities(box.expand(hitRange))) {
                 if (!(entity instanceof LivingEntity) || (entity.getEntityId() == this.player.getEntityId() && !this.canHitSelf)
                         || GeneralMethods.isRegionProtectedFromBuild(this, entity.getLocation())) {
                     continue;
                 }
 
                 AirAbility.breakBreathbendingHold(entity);
-                GeneralMethods.setVelocity(this, entity, player.getEyeLocation().getDirection().multiply(this.pushFactor));
+                GeneralMethods.setVelocity(this, entity, player.getEyeLocation().getDirection().multiply(this.knockback));
                 DamageHandler.damageEntity(entity, damage, this);
                 hit = true;
             }
@@ -244,7 +251,7 @@ public class EarthSlam extends EarthAbility implements AddonComboAbility {
             final int dimDivIncr = (int) (dim / degreeIncrement);
 
             final double lowerBound = dimDivIncr * degreeIncrement;
-            final double upperBound = (dimDivIncr + (1 * sign)) * degreeIncrement;
+            final double upperBound = (dimDivIncr + sign) * degreeIncrement;
 
             if (Math.abs(dim - lowerBound) < Math.abs(dim - upperBound)) {
                 dims[i] = lowerBound;

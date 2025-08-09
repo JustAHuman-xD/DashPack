@@ -32,6 +32,9 @@ Abilities:
       AutoSprint: true
       Cooldown: 3000
       Particles: 25
+    LightningStep:
+      Enabled: true
+      Cooldown: 25000
   Water:
     WaterDash:
       Enabled: true
@@ -61,13 +64,15 @@ Abilities:
       Cooldown: 20000
     EarthSlam:
       Enabled: true
-      SelectRange: 4
-      PushRange: 30
+      SelectRange: 8
       Height: 6
       Width: 6
-      Damage: 5
+      PushRange: 30
       Speed: 20
-      PushFactor: 1
+      Gravity: true
+      Damage: 5
+      Knockback: 1
+      HitRange: 0.3
       MaxHits: 5
       CanHitSelf: false
       Cooldown: 15000

@@ -1,7 +1,6 @@
 package me.justahuman.pk_hackathon.ability.airbending.combo;
 
 import com.projectkorra.projectkorra.ability.AirAbility;
-import com.projectkorra.projectkorra.ability.CoreAbility;
 import com.projectkorra.projectkorra.ability.util.ComboManager;
 import com.projectkorra.projectkorra.airbending.AirBurst;
 import com.projectkorra.projectkorra.attribute.Attribute;

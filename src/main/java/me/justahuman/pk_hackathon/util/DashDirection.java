@@ -40,7 +40,7 @@ public enum DashDirection {
                 if (input.isRight()) {
                     composite.add(RIGHT.getVector(player, input, pitchRestriction));
                 }
-                if (composite.isZero() && PKHackathon.instance.getConfig().getBoolean("empty-sprint-dash-forward")) {
+                if (composite.isZero() && PKHackathon.instance.getConfig().getBoolean("Dash.EmptySprintForward")) {
                     composite.add(FORWARD.getVector(player, input, pitchRestriction));
                 }
                 yield composite.isZero() ? composite : composite.normalize();
