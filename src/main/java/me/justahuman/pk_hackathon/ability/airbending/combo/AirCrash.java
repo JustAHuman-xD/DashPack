@@ -2,31 +2,26 @@ package me.justahuman.pk_hackathon.ability.airbending.combo;
 
 import com.projectkorra.projectkorra.ability.AirAbility;
 import com.projectkorra.projectkorra.ability.CoreAbility;
-import com.projectkorra.projectkorra.ability.util.ComboManager;
 import com.projectkorra.projectkorra.airbending.AirBlast;
 import com.projectkorra.projectkorra.airbending.AirBurst;
 import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.attribute.AttributeModification;
 import com.projectkorra.projectkorra.attribute.AttributeModifier;
 import com.projectkorra.projectkorra.event.AbilityRecalculateAttributeEvent;
-import com.projectkorra.projectkorra.util.ClickType;
 import lombok.Getter;
 import me.justahuman.pk_hackathon.PKHackathon;
-import me.justahuman.pk_hackathon.PlayerLocationAbility;
+import me.justahuman.pk_hackathon.ability.PlayerLocationAbility;
 import me.justahuman.pk_hackathon.ability.AddonComboAbility;
 import me.justahuman.pk_hackathon.ability.ListenerAbility;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 
-import java.util.ArrayList;
-
 @Getter
 public class AirCrash extends AirAbility implements ListenerAbility, PlayerLocationAbility, AddonComboAbility {
     private static final NamespacedKey RANGE_MODIFIER = PKHackathon.key("AirCrashRange");
     private static final NamespacedKey DAMAGE_MODIFIER = PKHackathon.key("AirCrashDamage");
     private static final NamespacedKey KNOCKBACK_MODIFIER = PKHackathon.key("AirCrashKnockback");
-    private static final ComboManager.AbilityInformation COMBO_INFO = new ComboManager.AbilityInformation("AirDash", ClickType.CUSTOM);
 
     @Attribute(Attribute.COOLDOWN)
     private long cooldown = getBaseCooldown();
@@ -59,9 +54,9 @@ public class AirCrash extends AirAbility implements ListenerAbility, PlayerLocat
             }
 
             if (crash == null) {
-                ArrayList<ComboManager.AbilityInformation> recent = ComboManager.getRecentlyUsedAbilities(burst.getPlayer(), 1);
-                if (!recent.isEmpty() && recent.get(0).equalsWithoutTime(COMBO_INFO)) {
-                    new AirCrash(burst.getPlayer(), burst, System.currentTimeMillis() - recent.get(0).getTime());
+                long comboTime = checkCustomCombo(burst.getPlayer());
+                if (comboTime != -1) {
+                    new AirCrash(burst.getPlayer(), burst, System.currentTimeMillis() - comboTime);
                 }
             }
 
@@ -94,6 +89,11 @@ public class AirCrash extends AirAbility implements ListenerAbility, PlayerLocat
     }
 
     @Override
+    public boolean forceCustomHandling() {
+        return true;
+    }
+
+    @Override
     public boolean isSneakAbility() {
         return false;
     }
@@ -101,6 +101,11 @@ public class AirCrash extends AirAbility implements ListenerAbility, PlayerLocat
     @Override
     public boolean isHarmlessAbility() {
         return true;
+    }
+
+    @Override
+    public Object createNewComboInstance(Player player) {
+        return null;
     }
 
     @Override

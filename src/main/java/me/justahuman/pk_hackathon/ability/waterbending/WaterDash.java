@@ -7,7 +7,6 @@ import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.waterbending.util.WaterReturn;
 import lombok.Getter;
 import me.justahuman.pk_hackathon.ability.DashAbility;
-import me.justahuman.pk_hackathon.ability.waterbending.combo.QuickRefill;
 import me.justahuman.pk_hackathon.util.DashDirection;
 import org.bukkit.Input;
 import org.bukkit.Particle;
@@ -27,8 +26,8 @@ public class WaterDash extends WaterAbility implements DashAbility {
     private boolean requireWater = getBoolean("RequireWater");
     private boolean consumeWater = getBoolean("ConsumeWater");
 
-    private final Input input;
-    private final DashDirection direction;
+    private Input input;
+    private DashDirection direction;
 
     public WaterDash(Player player, Input input, DashDirection direction) {
         super(player);
@@ -40,7 +39,6 @@ public class WaterDash extends WaterAbility implements DashAbility {
                 if (requireWater && consumeWater && !player.isInWaterOrRainOrBubbleColumn()) {
                     WaterReturn.emptyWaterBottle(player);
                 }
-                new QuickRefill(player);
             }
         }
     }
@@ -88,6 +86,8 @@ public class WaterDash extends WaterAbility implements DashAbility {
 
     @Override
     public boolean tryDash(BendingPlayer player, Input input, DashDirection direction) {
+        this.input = input;
+        this.direction = direction;
         return new WaterDash(player.getPlayer(), input, direction).isStarted();
     }
 }

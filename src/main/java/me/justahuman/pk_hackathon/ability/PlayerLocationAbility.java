@@ -1,4 +1,4 @@
-package me.justahuman.pk_hackathon;
+package me.justahuman.pk_hackathon.ability;
 
 import com.projectkorra.projectkorra.ability.Ability;
 import org.bukkit.Location;

@@ -2,13 +2,11 @@ package me.justahuman.pk_hackathon.ability.firebending.combo;
 
 import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.ability.LightningAbility;
-import com.projectkorra.projectkorra.ability.util.ComboManager;
 import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.firebending.lightning.Lightning;
-import com.projectkorra.projectkorra.util.ClickType;
 import com.projectkorra.projectkorra.util.DamageHandler;
 import lombok.Getter;
-import me.justahuman.pk_hackathon.PlayerLocationAbility;
+import me.justahuman.pk_hackathon.ability.PlayerLocationAbility;
 import me.justahuman.pk_hackathon.ability.AddonComboAbility;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -21,8 +19,6 @@ import java.util.List;
 
 @Getter
 public class LightningStep extends LightningAbility implements PlayerLocationAbility, AddonComboAbility {
-    public static final ComboManager.AbilityInformation COMBO_INFO = new ComboManager.AbilityInformation("Lightning", ClickType.LEFT_CLICK);
-
     @Attribute(Attribute.COOLDOWN)
     private long cooldown = getBaseCooldown();
 
@@ -121,6 +117,11 @@ public class LightningStep extends LightningAbility implements PlayerLocationAbi
     }
 
     @Override
+    public boolean consumesDash() {
+        return true;
+    }
+
+    @Override
     public boolean isSneakAbility() {
         return false;
     }
@@ -128,6 +129,11 @@ public class LightningStep extends LightningAbility implements PlayerLocationAbi
     @Override
     public boolean isHarmlessAbility() {
         return false;
+    }
+
+    @Override
+    public Object createNewComboInstance(Player player) {
+        return new LightningStep(player);
     }
 
     @Override

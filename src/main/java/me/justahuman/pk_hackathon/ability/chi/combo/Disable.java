@@ -2,20 +2,15 @@ package me.justahuman.pk_hackathon.ability.chi.combo;
 
 import com.projectkorra.projectkorra.Element;
 import com.projectkorra.projectkorra.GeneralMethods;
-import com.projectkorra.projectkorra.ProjectKorra;
 import com.projectkorra.projectkorra.ability.ChiAbility;
 import com.projectkorra.projectkorra.ability.CoreAbility;
-import com.projectkorra.projectkorra.ability.util.ComboManager;
-import com.projectkorra.projectkorra.ability.util.ComboUtil;
 import com.projectkorra.projectkorra.airbending.Suffocate;
 import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.region.RegionProtection;
-import com.projectkorra.projectkorra.util.ClickType;
 import com.projectkorra.projectkorra.util.MovementHandler;
 import lombok.Getter;
-import me.justahuman.pk_hackathon.PlayerLocationAbility;
+import me.justahuman.pk_hackathon.ability.PlayerLocationAbility;
 import me.justahuman.pk_hackathon.ability.AddonComboAbility;
-import me.justahuman.pk_hackathon.ability.DashAbility;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Creature;
@@ -24,8 +19,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BoundingBox;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Predicate;
 
 @Getter
@@ -80,6 +73,11 @@ public class Disable extends ChiAbility implements PlayerLocationAbility, AddonC
     }
 
     @Override
+    public int getPriority() {
+        return 100;
+    }
+
+    @Override
     public boolean isSneakAbility() {
         return false;
     }
@@ -97,22 +95,5 @@ public class Disable extends ChiAbility implements PlayerLocationAbility, AddonC
     @Override
     public Object createNewComboInstance(Player player) {
         return new Disable(player);
-    }
-
-    @Override
-    public ArrayList<ComboManager.AbilityInformation> getCombination() {
-        List<String> comboList = getStringList("Combination");
-        ArrayList<ComboManager.AbilityInformation> combination = ComboUtil.generateCombinationFromList(this, getStringList("Combination"));
-        if (comboList.size() != combination.size()) {
-            for (int i = 0; i < comboList.size(); i++) {
-                String step = comboList.get(i);
-                String[] parts = step.split(":");
-                if (combination.size() >= i && parts.length == 2 && CoreAbility.getAbility(parts[0]) instanceof DashAbility) {
-                    combination.add(i, new ComboManager.AbilityInformation(parts[0], ClickType.CUSTOM));
-                    ProjectKorra.log.info("\"" + getName() + "\" had \"" + parts[0] + "\" added back to it's combo list after being incorrectly removed.");
-                }
-            }
-        }
-        return combination;
     }
 }

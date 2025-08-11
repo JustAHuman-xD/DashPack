@@ -6,7 +6,7 @@ import com.projectkorra.projectkorra.ability.CoreAbility;
 import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.region.RegionProtection;
 import lombok.Getter;
-import me.justahuman.pk_hackathon.PlayerLocationAbility;
+import me.justahuman.pk_hackathon.ability.PlayerLocationAbility;
 import me.justahuman.pk_hackathon.ability.AddonComboAbility;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -69,6 +69,11 @@ public class ReflexiveStrike extends ChiAbility implements PlayerLocationAbility
     @Override
     public boolean isHarmlessAbility() {
         return false;
+    }
+
+    @Override
+    public Object createNewComboInstance(Player player) {
+        return new ReflexiveStrike(player);
     }
 
     @Override

@@ -14,6 +14,10 @@ Abilities:
       YSpeed: 0.1
       ResetFallDistance: true
       Cooldown: 7500
+      Combination:
+      - AirSuction:LEFT_CLICK
+      - AirSuction:LEFT_CLICK
+      - AirDash:ANY
     AirCrash:
       Enabled: true
       DashTime: 1500
@@ -21,6 +25,8 @@ Abilities:
       PushFactor: 1.5
       DamageFactor: 1.0
       Cooldown: 20000
+      Combination:
+      - AirDash:ANY
   Fire:
     FireDash:
       Enabled: true
@@ -35,6 +41,23 @@ Abilities:
     LightningStep:
       Enabled: true
       Cooldown: 15000
+      Combination:
+      - Lightning:LEFT_CLICK
+      - Lightning:LEFT_CLICK
+      - FireDash:ANY,FORWARD
+    FireTunnel:
+      Enabled: true
+      Length: 15
+      Width: 3
+      Height: 3
+      Speed: 30
+      Damage: 2
+      Cooldown: 20000
+      Combination:
+      - FireShield:LEFT_CLICK
+      - FireShield:SHIFT_DOWN
+      - FireWall:SHIFT_UP
+      - FireDash:ANY,FORWARD
   Water:
     WaterDash:
       Enabled: true
@@ -58,6 +81,8 @@ Abilities:
       MaxFill: 3
       PlaySound: true
       Cooldown: 20000
+      Combination:
+      - WaterDash:ANY
   Earth:
     EarthDash:
       Enabled: true
@@ -74,6 +99,10 @@ Abilities:
       Additive: true
       PushFactor: 4.5
       Cooldown: 20000
+      Combination:
+      - Catapult:RIGHT_CLICK_BLOCK
+      - Catapult:RIGHT_CLICK_BLOCK
+      - EarthDash:ANY
     EarthSlam:
       Enabled: true
       SelectRange: 8
@@ -88,6 +117,10 @@ Abilities:
       MaxHits: 5
       CanHitSelf: false
       Cooldown: 15000
+      Combination:
+      - EarthSmash:RIGHT_CLICK_BLOCK
+      - EarthSmash:RIGHT_CLICK_BLOCK
+      - EarthDash:ANY,FORWARD
     EarthCrash:
       Enabled: true
       DashTime: 1500
@@ -95,6 +128,9 @@ Abilities:
       PushFactor: 1.5
       DamageFactor: 1.0
       Cooldown: 20000
+      Combination:
+      - Catapult:LEFT_CLICK
+      - EarthDash:ANY,BACKWARD
   Chi:
     ChiDash:
       Enabled: true
@@ -118,7 +154,7 @@ Abilities:
       - Paralyze:LEFT_CLICK
       - Paralyze:LEFT_CLICK
       - RapidPunch:LEFT_CLICK
-      - ChiDash:CUSTOM
+      - ChiDash:ANY
     ReflexiveStrike:
       Enabled: true
       HitRadius: 1.5
@@ -126,3 +162,5 @@ Abilities:
       Damage: 2
       DashTime: 2000
       Cooldown: 5000
+      Combination:
+      - ChiDash:ANY

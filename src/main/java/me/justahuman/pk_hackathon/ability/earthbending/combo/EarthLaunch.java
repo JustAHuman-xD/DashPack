@@ -3,12 +3,11 @@ package me.justahuman.pk_hackathon.ability.earthbending.combo;
 import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.ability.CoreAbility;
 import com.projectkorra.projectkorra.ability.EarthAbility;
-import com.projectkorra.projectkorra.ability.util.ComboManager;
 import com.projectkorra.projectkorra.attribute.Attribute;
-import com.projectkorra.projectkorra.util.ClickType;
 import lombok.Getter;
-import me.justahuman.pk_hackathon.PlayerLocationAbility;
+import me.justahuman.pk_hackathon.ability.PlayerLocationAbility;
 import me.justahuman.pk_hackathon.ability.AddonComboAbility;
+import me.justahuman.pk_hackathon.ability.earthbending.EarthDash;
 import me.justahuman.pk_hackathon.util.DashDirection;
 import org.bukkit.Input;
 import org.bukkit.entity.Player;
@@ -17,8 +16,6 @@ import org.bukkit.util.Vector;
 @Getter
 @SuppressWarnings("UnstableApiUsage")
 public class EarthLaunch extends EarthAbility implements PlayerLocationAbility, AddonComboAbility {
-    public static final ComboManager.AbilityInformation COMBO_INFO = new ComboManager.AbilityInformation("Catapult", ClickType.RIGHT_CLICK_BLOCK);
-
     @Attribute(Attribute.COOLDOWN)
     private long cooldown = getBaseCooldown();
     @Attribute(Attribute.SELF_PUSH)
@@ -56,6 +53,11 @@ public class EarthLaunch extends EarthAbility implements PlayerLocationAbility, 
     }
 
     @Override
+    public boolean consumesDash() {
+        return true;
+    }
+
+    @Override
     public boolean isSneakAbility() {
         return false;
     }
@@ -63,6 +65,12 @@ public class EarthLaunch extends EarthAbility implements PlayerLocationAbility, 
     @Override
     public boolean isHarmlessAbility() {
         return false;
+    }
+
+    @Override
+    public Object createNewComboInstance(Player player) {
+        EarthDash dash = (EarthDash) CoreAbility.getAbility(EarthDash.class);
+        return dash == null ? null : new EarthLaunch(player, dash.getInput(), dash.getDirection());
     }
 
     @Override

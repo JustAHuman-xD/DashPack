@@ -7,6 +7,7 @@ import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.util.ParticleEffect;
 import lombok.Getter;
 import me.justahuman.pk_hackathon.ability.DashAbility;
+import me.justahuman.pk_hackathon.ability.firebending.combo.FireTunnel;
 import me.justahuman.pk_hackathon.ability.firebending.combo.LightningStep;
 import me.justahuman.pk_hackathon.util.DashDirection;
 import org.bukkit.Input;
@@ -22,8 +23,8 @@ public class FireDash extends FireAbility implements DashAbility {
     @Attribute(Attribute.SELF_PUSH)
     private double speed = getBaseSpeed();
 
-    private final Input input;
-    private final DashDirection direction;
+    private Input input;
+    private DashDirection direction;
 
     public FireDash(Player player, Input input, DashDirection direction) {
         super(player);
@@ -55,7 +56,9 @@ public class FireDash extends FireAbility implements DashAbility {
 
     @Override
     public boolean tryDash(BendingPlayer player, Input input, DashDirection direction) {
-        return usingCombo(player, () -> new LightningStep(player.getPlayer()), LightningStep.COMBO_INFO, LightningStep.COMBO_INFO)
+        this.input = input;
+        this.direction = direction;
+        return usingCombo(player, LightningStep.class) // || usingCombo(player, FireTunnel.class)
                 || new FireDash(player.getPlayer(), input, direction).isStarted();
     }
 }

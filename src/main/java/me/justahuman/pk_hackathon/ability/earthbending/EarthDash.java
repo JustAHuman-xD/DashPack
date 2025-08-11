@@ -23,9 +23,9 @@ public class EarthDash extends EarthAbility implements DashAbility {
     @Attribute(Attribute.SELF_PUSH)
     private double speed = getBaseSpeed();
 
-    private final Input input;
-    private final DashDirection direction;
-    private final boolean plummet;
+    private Input input;
+    private DashDirection direction;
+    private boolean plummet;
 
     public EarthDash(Player player, Input input, DashDirection direction, boolean plummet) {
         super(player);
@@ -63,6 +63,9 @@ public class EarthDash extends EarthAbility implements DashAbility {
 
     @Override
     public boolean tryDash(BendingPlayer player, Input input, DashDirection direction) {
+        this.input = input;
+        this.direction = direction;
+
         if (player.getBoundAbility() instanceof Catapult && !player.getPlayer().isOnGround() && direction == DashDirection.BACKWARD) {
             return new EarthDash(player.getPlayer(), input, direction, true).isStarted();
         }
@@ -72,8 +75,7 @@ public class EarthDash extends EarthAbility implements DashAbility {
             return false;
         }
 
-        return usingCombo(player, () -> new EarthLaunch(player.getPlayer(), input, direction), EarthLaunch.COMBO_INFO, EarthLaunch.COMBO_INFO)
-                || usingCombo(player, () -> new EarthSlam(player.getPlayer()), EarthSlam.COMBO_INFO, EarthSlam.COMBO_INFO)
+        return usingCombo(player, EarthLaunch.class) || usingCombo(player, EarthSlam.class)
                 || new EarthDash(player.getPlayer(), input, direction, false).isStarted();
     }
 }

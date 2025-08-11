@@ -5,7 +5,7 @@ import com.projectkorra.projectkorra.ability.WaterAbility;
 import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.waterbending.util.WaterReturn;
 import lombok.Getter;
-import me.justahuman.pk_hackathon.PlayerLocationAbility;
+import me.justahuman.pk_hackathon.ability.PlayerLocationAbility;
 import me.justahuman.pk_hackathon.ability.AddonComboAbility;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -51,7 +51,11 @@ public class QuickRefill extends WaterAbility implements PlayerLocationAbility, 
                 ItemStack item = inventory.getItem(slot);
                 if (item != null) {
                     item.subtract();
-                    inventory.addItem(waterBottle.clone()).values().forEach(excess -> player.getWorld().dropItemNaturally(player.getLocation(), excess));
+                    if (item.isEmpty()) {
+                        inventory.setItem(slot, waterBottle.clone());
+                    } else {
+                        inventory.addItem(waterBottle.clone()).values().forEach(excess -> player.getWorld().dropItemNaturally(player.getLocation(), excess));
+                    }
                 }
             }
             if (playSound) {
@@ -70,6 +74,11 @@ public class QuickRefill extends WaterAbility implements PlayerLocationAbility, 
     @Override
     public boolean isHarmlessAbility() {
         return true;
+    }
+
+    @Override
+    public Object createNewComboInstance(Player player) {
+        return new QuickRefill(player);
     }
 
     @Override

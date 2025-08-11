@@ -3,7 +3,6 @@ package me.justahuman.pk_hackathon.ability.earthbending.combo;
 import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.ability.AirAbility;
 import com.projectkorra.projectkorra.ability.EarthAbility;
-import com.projectkorra.projectkorra.ability.util.ComboManager;
 import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.earthbending.RaiseEarthWall;
 import com.projectkorra.projectkorra.region.RegionProtection;
@@ -28,8 +27,6 @@ import java.util.Set;
 
 @Getter
 public class EarthSlam extends EarthAbility implements AddonComboAbility {
-    public static final ComboManager.AbilityInformation COMBO_INFO = new ComboManager.AbilityInformation("EarthSmash", ClickType.RIGHT_CLICK_BLOCK);
-
     @Attribute(Attribute.COOLDOWN)
     private long cooldown = getBaseCooldown();
     @Attribute(Attribute.SELECT_RANGE)
@@ -217,6 +214,11 @@ public class EarthSlam extends EarthAbility implements AddonComboAbility {
     }
 
     @Override
+    public boolean consumesDash() {
+        return true;
+    }
+
+    @Override
     public boolean isSneakAbility() {
         return false;
     }
@@ -227,13 +229,18 @@ public class EarthSlam extends EarthAbility implements AddonComboAbility {
     }
 
     @Override
-    public String getName() {
-        return "EarthSlam";
+    public Location getLocation() {
+        return location;
     }
 
     @Override
-    public Location getLocation() {
-        return location;
+    public Object createNewComboInstance(Player player) {
+        return new EarthSlam(player);
+    }
+
+    @Override
+    public String getName() {
+        return "EarthSlam";
     }
 
     /**

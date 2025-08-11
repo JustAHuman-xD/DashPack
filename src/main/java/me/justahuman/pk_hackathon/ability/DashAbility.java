@@ -10,13 +10,13 @@ import com.projectkorra.projectkorra.ability.util.ComboManager;
 import com.projectkorra.projectkorra.configuration.ConfigManager;
 import com.projectkorra.projectkorra.util.ClickType;
 import me.justahuman.pk_hackathon.PKHackathon;
-import me.justahuman.pk_hackathon.PlayerLocationAbility;
 import me.justahuman.pk_hackathon.ability.airbending.AirDash;
 import me.justahuman.pk_hackathon.ability.chi.ChiDash;
 import me.justahuman.pk_hackathon.ability.earthbending.EarthDash;
 import me.justahuman.pk_hackathon.ability.firebending.FireDash;
 import me.justahuman.pk_hackathon.ability.waterbending.WaterDash;
 import me.justahuman.pk_hackathon.util.DashDirection;
+import me.justahuman.pk_hackathon.util.DashInformation;
 import me.justahuman.pk_hackathon.util.Utils;
 import org.bukkit.Color;
 import org.bukkit.Input;
@@ -85,16 +85,16 @@ public interface DashAbility extends PlayerLocationAbility, PassiveAbility, MyAd
         if (!player.isOnGround() && !player.isInWaterOrBubbleColumn()) {
             if (!ability.inAir()) {
                 return false;
-            }
+            } else if (has("MaxAirHeight")) {
+                double maxAir = Math.pow(getDouble("MaxAirHeight"), 2);
+                Location location = player.getLocation();
+                while (location.distanceSquared(player.getLocation()) < maxAir && location.getBlock().isEmpty()) {
+                    location = location.add(0, -1, 0);
+                }
 
-            double maxAir = Math.pow(getDouble("MaxAirHeight"), 2);
-            Location location = player.getLocation();
-            while (location.distanceSquared(player.getLocation()) < maxAir && location.getBlock().isEmpty()) {
-                location = location.add(0, -1, 0);
-            }
-
-            if (location.getBlock().isEmpty()) {
-                return false;
+                if (location.getBlock().isEmpty()) {
+                    return false;
+                }
             }
         }
 
@@ -105,21 +105,54 @@ public interface DashAbility extends PlayerLocationAbility, PassiveAbility, MyAd
         return !getVelocityDirection().isZero();
     }
 
-    default boolean usingCombo(BendingPlayer player, Supplier<? extends CoreAbility> supplier, ComboManager.AbilityInformation... abilities) {
-        ArrayList<ComboManager.AbilityInformation> recent = ComboManager.getRecentlyUsedAbilities(player.getPlayer(), abilities.length);
-        if (recent.size() == abilities.length) {
-            for (int i = 0; i < abilities.length; i++) {
-                if (!recent.get(i).equalsWithoutTime(abilities[i])) {
-                    return false;
-                }
-            }
+    default <A extends CoreAbility & AddonComboAbility> boolean usingCombo(BendingPlayer player, Class<A> clazz) {
+        A defaultAbility = (A) CoreAbility.getAbility(clazz);
+        return defaultAbility != null && usingCombo(player, () -> (A) defaultAbility.createNewComboInstance(player.getPlayer()), clazz);
+    }
 
-            if (supplier.get().isStarted()) {
-                addUsage(player.getPlayer());
-                return true;
+    default <A extends CoreAbility & AddonComboAbility> boolean usingCombo(BendingPlayer player, Supplier<A> supplier, Class<A> clazz) {
+        A defaultAbility = (A) CoreAbility.getAbility(clazz);
+        if (defaultAbility == null) {
+            return false;
+        }
+
+        ArrayList<ComboManager.AbilityInformation> combo = new ArrayList<>(ComboManager.getComboAbilities().get(defaultAbility.getName()).getAbilities());
+        if (!combo.remove(AddonComboAbility.IMPOSSIBLE)) {
+            return false;
+        }
+
+        if (defaultAbility.consumesDash()) {
+            addUsage(player.getPlayer());
+        }
+        ArrayList<ComboManager.AbilityInformation> recent = ComboManager.getRecentlyUsedAbilities(player.getPlayer(), combo.size());
+        if (combo.size() != recent.size()) {
+            if (defaultAbility.consumesDash()) {
+                removeUsage(player.getPlayer());
+            }
+            return false;
+        }
+
+        for (int i = 0; i < combo.size(); i++) {
+            if (!combo.get(i).equalsWithoutTime(recent.get(i))) {
+                if (defaultAbility.consumesDash()) {
+                    removeUsage(player.getPlayer());
+                }
+                return false;
             }
         }
-        return false;
+
+        A ability = supplier.get();
+        if (ability != null && ability.isStarted()) {
+            if (!defaultAbility.consumesDash()) {
+                addUsage(player.getPlayer());
+            }
+            return true;
+        } else {
+            if (defaultAbility.consumesDash()) {
+                removeUsage(player.getPlayer());
+            }
+            return false;
+        }
     }
 
     default void adjustVelocity() {
@@ -154,7 +187,15 @@ public interface DashAbility extends PlayerLocationAbility, PassiveAbility, MyAd
     }
 
     default void addUsage(Player player) {
-        Utils.addComboAbility(player, new ComboManager.AbilityInformation(getName(), ClickType.CUSTOM, System.currentTimeMillis()));
+        Utils.addComboAbility(player, new DashInformation(getName(), System.currentTimeMillis(), getDirection().with(getInput())));
+    }
+
+    default void removeUsage() {
+        removeUsage(getPlayer());
+    }
+
+    default void removeUsage(Player player) {
+        ComboManager.removeRecentType(player, ClickType.CUSTOM);
     }
 
     default void postDash() {

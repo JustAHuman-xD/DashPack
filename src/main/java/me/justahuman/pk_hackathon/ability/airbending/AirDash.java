@@ -18,8 +18,8 @@ public class AirDash extends AirAbility implements DashAbility {
     @Attribute(Attribute.SELF_PUSH)
     private double speed = getBaseSpeed();
 
-    private final Input input;
-    private final DashDirection direction;
+    private Input input;
+    private DashDirection direction;
 
     public AirDash(Player player, Input input, DashDirection direction) {
         super(player);
@@ -45,7 +45,8 @@ public class AirDash extends AirAbility implements DashAbility {
 
     @Override
     public boolean tryDash(BendingPlayer player, Input input, DashDirection direction) {
-        return usingCombo(player, () -> new AirBreak(player.getPlayer()), AirBreak.COMBO_INFO, AirBreak.COMBO_INFO)
-                || new AirDash(player.getPlayer(), input, direction).isStarted();
+        this.input = input;
+        this.direction = direction;
+        return usingCombo(player, AirBreak.class) || new AirDash(player.getPlayer(), input, direction).isStarted();
     }
 }

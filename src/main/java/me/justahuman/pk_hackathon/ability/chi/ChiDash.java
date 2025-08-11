@@ -5,7 +5,6 @@ import com.projectkorra.projectkorra.ability.ChiAbility;
 import com.projectkorra.projectkorra.attribute.Attribute;
 import lombok.Getter;
 import me.justahuman.pk_hackathon.ability.DashAbility;
-import me.justahuman.pk_hackathon.ability.chi.combo.ReflexiveStrike;
 import me.justahuman.pk_hackathon.util.DashDirection;
 import org.bukkit.Color;
 import org.bukkit.Input;
@@ -21,8 +20,8 @@ public class ChiDash extends ChiAbility implements DashAbility {
     @Attribute(Attribute.SELF_PUSH)
     private double speed = getBaseSpeed();
 
-    private final Input input;
-    private final DashDirection direction;
+    private Input input;
+    private DashDirection direction;
 
     public ChiDash(Player player, Input input, DashDirection direction) {
         super(player);
@@ -30,9 +29,6 @@ public class ChiDash extends ChiAbility implements DashAbility {
         this.direction = direction;
         if (canDash(this)) {
             start();
-            if (isStarted()) {
-                new ReflexiveStrike(player);
-            }
         }
     }
 
@@ -48,6 +44,8 @@ public class ChiDash extends ChiAbility implements DashAbility {
 
     @Override
     public boolean tryDash(BendingPlayer player, Input input, DashDirection direction) {
+        this.input = input;
+        this.direction = direction;
         return new ChiDash(player.getPlayer(), input, direction).isStarted();
     }
 }

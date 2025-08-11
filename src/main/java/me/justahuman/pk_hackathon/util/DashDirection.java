@@ -6,13 +6,17 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SuppressWarnings("UnstableApiUsage")
 public enum DashDirection {
     FORWARD,
     BACKWARD,
     LEFT,
     RIGHT,
-    HELD;
+    HELD,
+    ANY;
 
     public Vector getVector(Player player, Input input, int pitchRestriction) {
         Location location = player.getLocation();
@@ -22,6 +26,7 @@ public enum DashDirection {
 
         Vector direction = location.getDirection();
         return switch (this) {
+            case ANY -> throw new IllegalArgumentException("ANY direction cannot be used to get a vector.");
             case FORWARD -> direction;
             case BACKWARD -> direction.multiply(-1);
             case LEFT -> direction.crossProduct(new Vector(0, -1, 0)).normalize();
@@ -63,5 +68,29 @@ public enum DashDirection {
             direction = DashDirection.HELD;
         }
         return direction;
+    }
+
+    public List<DashDirection> with(Input input) {
+        if (this == HELD) {
+            List<DashDirection> directions = new ArrayList<>();
+            if (input.isForward()) {
+                directions.add(FORWARD);
+            }
+            if (input.isBackward()) {
+                directions.add(BACKWARD);
+            }
+            if (input.isLeft()) {
+                directions.add(LEFT);
+            }
+            if (input.isRight()) {
+                directions.add(RIGHT);
+            }
+            if (directions.isEmpty() && PKHackathon.instance.getConfig().getBoolean("Dash.EmptySprintForward")) {
+                directions.add(FORWARD);
+            }
+            return directions;
+        } else {
+            return List.of(this);
+        }
     }
 }

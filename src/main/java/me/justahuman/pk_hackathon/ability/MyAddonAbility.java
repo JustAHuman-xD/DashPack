@@ -37,12 +37,16 @@ public interface MyAddonAbility extends Ability, AddonAbility {
         return "Abilities." + elementName + "." + getName() + ".";
     }
 
+    default boolean has(String path) {
+        return ConfigManager.defaultConfig.get().contains(configPath() + path);
+    }
+
     default int getInt(String path) {
         return getInt(path, 0);
     }
 
     default int getInt(String path, int def) {
-        return ConfigManager.defaultConfig.get().getInt(configPath() + path);
+        return ConfigManager.defaultConfig.get().getInt(configPath() + path, def);
     }
 
     default long getLong(String path) {
