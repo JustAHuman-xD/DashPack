@@ -40,6 +40,9 @@ Abilities:
       Description: TBA
       Instructions: TBA
     Combo:
+      QuickRefill:
+        Description: TBA
+        Instructions: WaterDash (In/Through water)
       WaterRush:
         Description: TBA
         Instructions: TBA
@@ -51,9 +54,9 @@ Abilities:
       Description: TBA
       Instructions: TBA
     Combo:
-      DashBlitz:
+      Disable:
         Description: TBA
-        Instructions: TBA
-      DashSlam:
+        Instructions: Paralyze (Left click) > Paralyze (Left click) > RapidPunch (Left click) > ChiDash (Into/Through mob)
+      ReflexiveStrike:
         Description: TBA
-        Instructions: TBA
+        Instructions: ChiDash (Into/Through mob)

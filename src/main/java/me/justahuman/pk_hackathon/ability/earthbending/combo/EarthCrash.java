@@ -13,12 +13,10 @@ import lombok.Getter;
 import me.justahuman.pk_hackathon.PKHackathon;
 import me.justahuman.pk_hackathon.PlayerLocationAbility;
 import me.justahuman.pk_hackathon.ability.AddonComboAbility;
-import org.bukkit.Bukkit;
+import me.justahuman.pk_hackathon.ability.ListenerAbility;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -26,7 +24,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 @Getter
-public class EarthCrash extends EarthAbility implements Listener, PlayerLocationAbility, AddonComboAbility {
+public class EarthCrash extends EarthAbility implements ListenerAbility, PlayerLocationAbility, AddonComboAbility {
     // TODO: PR: Ripple needs to reinitialize locations on attribute recalculation
     private static final MethodHandle INITIALIZE_LOCATIONS;
     static {
@@ -64,16 +62,6 @@ public class EarthCrash extends EarthAbility implements Listener, PlayerLocation
         if (dashTime <= this.dashTime && bPlayer.canBendIgnoreBinds(this)) {
             start();
         }
-    }
-
-    @Override
-    public void load() {
-        Bukkit.getServer().getPluginManager().registerEvents(this, PKHackathon.instance);
-    }
-
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
     }
 
     @EventHandler

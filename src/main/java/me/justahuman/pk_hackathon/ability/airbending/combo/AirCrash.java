@@ -14,17 +14,15 @@ import lombok.Getter;
 import me.justahuman.pk_hackathon.PKHackathon;
 import me.justahuman.pk_hackathon.PlayerLocationAbility;
 import me.justahuman.pk_hackathon.ability.AddonComboAbility;
-import org.bukkit.Bukkit;
+import me.justahuman.pk_hackathon.ability.ListenerAbility;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
 
 import java.util.ArrayList;
 
 @Getter
-public class AirCrash extends AirAbility implements Listener, PlayerLocationAbility, AddonComboAbility {
+public class AirCrash extends AirAbility implements ListenerAbility, PlayerLocationAbility, AddonComboAbility {
     private static final NamespacedKey RANGE_MODIFIER = PKHackathon.key("AirCrashRange");
     private static final NamespacedKey DAMAGE_MODIFIER = PKHackathon.key("AirCrashDamage");
     private static final NamespacedKey KNOCKBACK_MODIFIER = PKHackathon.key("AirCrashKnockback");
@@ -47,16 +45,6 @@ public class AirCrash extends AirAbility implements Listener, PlayerLocationAbil
         if (dashTime <= this.dashTime && bPlayer.canBendIgnoreBinds(this)) {
             start();
         }
-    }
-
-    @Override
-    public void load() {
-        Bukkit.getServer().getPluginManager().registerEvents(this, PKHackathon.instance);
-    }
-
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
     }
 
     @EventHandler

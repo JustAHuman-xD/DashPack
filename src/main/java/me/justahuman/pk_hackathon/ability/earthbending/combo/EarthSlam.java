@@ -6,6 +6,7 @@ import com.projectkorra.projectkorra.ability.EarthAbility;
 import com.projectkorra.projectkorra.ability.util.ComboManager;
 import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.earthbending.RaiseEarthWall;
+import com.projectkorra.projectkorra.region.RegionProtection;
 import com.projectkorra.projectkorra.util.BlockSource;
 import com.projectkorra.projectkorra.util.ClickType;
 import com.projectkorra.projectkorra.util.DamageHandler;
@@ -191,7 +192,7 @@ public class EarthSlam extends EarthAbility implements AddonComboAbility {
 
             for (Entity entity : min.getWorld().getNearbyEntities(box.expand(hitRange))) {
                 if (!(entity instanceof LivingEntity) || (entity.getEntityId() == this.player.getEntityId() && !this.canHitSelf)
-                        || GeneralMethods.isRegionProtectedFromBuild(this, entity.getLocation())) {
+                        || RegionProtection.isRegionProtected(this, entity.getLocation())) {
                     continue;
                 }
 

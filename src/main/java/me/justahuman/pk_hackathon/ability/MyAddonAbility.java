@@ -38,6 +38,10 @@ public interface MyAddonAbility extends Ability, AddonAbility {
     }
 
     default int getInt(String path) {
+        return getInt(path, 0);
+    }
+
+    default int getInt(String path, int def) {
         return ConfigManager.defaultConfig.get().getInt(configPath() + path);
     }
 
@@ -46,15 +50,19 @@ public interface MyAddonAbility extends Ability, AddonAbility {
     }
 
     default double getDouble(String path) {
-        return ConfigManager.defaultConfig.get().getDouble(configPath() + path);
+        return getDouble(path, 0.0);
+    }
+
+    default double getDouble(String path, double def) {
+        return ConfigManager.defaultConfig.get().getDouble(configPath() + path, def);
     }
 
     default boolean getBoolean(String path) {
         return ConfigManager.defaultConfig.get().getBoolean(configPath() + path);
     }
 
-    default List<String> getConfiguredCombination() {
-        return ConfigManager.defaultConfig.get().getStringList(configPath() + "Combination");
+    default List<String> getStringList(String path) {
+        return ConfigManager.defaultConfig.get().getStringList(configPath() + path);
     }
 
     default long getBaseCooldown() {

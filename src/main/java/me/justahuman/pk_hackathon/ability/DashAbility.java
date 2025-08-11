@@ -17,6 +17,7 @@ import me.justahuman.pk_hackathon.ability.earthbending.EarthDash;
 import me.justahuman.pk_hackathon.ability.firebending.FireDash;
 import me.justahuman.pk_hackathon.ability.waterbending.WaterDash;
 import me.justahuman.pk_hackathon.util.DashDirection;
+import me.justahuman.pk_hackathon.util.Utils;
 import org.bukkit.Color;
 import org.bukkit.Input;
 import org.bukkit.Location;
@@ -81,8 +82,20 @@ public interface DashAbility extends PlayerLocationAbility, PassiveAbility, MyAd
             return false;
         }
 
-        if (!player.isOnGround() && !player.isInWaterOrBubbleColumn() && !ability.inAir()) {
-            return false;
+        if (!player.isOnGround() && !player.isInWaterOrBubbleColumn()) {
+            if (!ability.inAir()) {
+                return false;
+            }
+
+            double maxAir = Math.pow(getDouble("MaxAirHeight"), 2);
+            Location location = player.getLocation();
+            while (location.distanceSquared(player.getLocation()) < maxAir && location.getBlock().isEmpty()) {
+                location = location.add(0, -1, 0);
+            }
+
+            if (location.getBlock().isEmpty()) {
+                return false;
+            }
         }
 
         if (player.getFoodLevel() <= 6) {
@@ -111,7 +124,7 @@ public interface DashAbility extends PlayerLocationAbility, PassiveAbility, MyAd
 
     default void adjustVelocity() {
         Player player = getPlayer();
-        Vector dashVelocity = getVelocityDirection().multiply(getSpeed());
+        Vector dashVelocity = getVelocityDirection().multiply(getSpeedWithContext());
         Vector newVelocity = isAdditive() ? player.getVelocity().add(dashVelocity) : dashVelocity;
         GeneralMethods.setVelocity(this, player, newVelocity);
     }
@@ -141,7 +154,7 @@ public interface DashAbility extends PlayerLocationAbility, PassiveAbility, MyAd
     }
 
     default void addUsage(Player player) {
-        ComboManager.addRecentAbility(player, new ComboManager.AbilityInformation(getName(), ClickType.CUSTOM, System.currentTimeMillis()));
+        Utils.addComboAbility(player, new ComboManager.AbilityInformation(getName(), ClickType.CUSTOM, System.currentTimeMillis()));
     }
 
     default void postDash() {
@@ -161,7 +174,7 @@ public interface DashAbility extends PlayerLocationAbility, PassiveAbility, MyAd
     }
 
     default int getPitchRestriction() {
-        return getInt("PitchRestriction");
+        return getInt("PitchRestriction", -1);
     }
 
     default boolean inAir() {
@@ -187,6 +200,16 @@ public interface DashAbility extends PlayerLocationAbility, PassiveAbility, MyAd
     Input getInput();
     DashDirection getDirection();
     double getSpeed();
+    default double getSpeedWithContext() {
+        double speed = getSpeed();
+        Player player = getPlayer();
+        if (player.isInWaterOrRainOrBubbleColumn()) {
+            speed *= getDouble("InWaterSpeedFactor", 1);
+        } else if (!player.isOnGround()) {
+            speed *= getDouble("InAirSpeedFactor", 1);
+        }
+        return speed;
+    }
 
     default Vector getVelocityDirection() {
         return getDirection().getVector(getPlayer(), getInput(), getPitchRestriction());

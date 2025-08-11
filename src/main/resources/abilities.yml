@@ -4,7 +4,6 @@ Abilities:
       Enabled: true
       Additive: true
       Speed: 2.25
-      PitchRestriction: -1
       InAir: true
       InWater: false
       AutoSprint: true
@@ -39,14 +38,26 @@ Abilities:
   Water:
     WaterDash:
       Enabled: true
+      RequireWater: true
+      ConsumeWater: false
       Additive: true
       Speed: 1.75
       PitchRestriction: 25
-      InAir: false
+      InAir: true
+      InAirSpeedFactor: 0.6
       InWater: true
+      InWaterSpeedFactor: 1.75
+      InWaterPitchRestriction: -1
       AutoSprint: true
       Cooldown: 2000
       Particles: 40
+    QuickRefill:
+      Enabled: true
+      DashTime: 1500
+      Interval: 300
+      MaxFill: 3
+      PlaySound: true
+      Cooldown: 20000
   Earth:
     EarthDash:
       Enabled: true
@@ -88,10 +99,30 @@ Abilities:
     ChiDash:
       Enabled: true
       Additive: true
-      Speed: 1.75
-      PitchRestriction: -1
-      InAir: false
+      Speed: 2.0
+      InAir: true
+      MaxAirHeight: 1.9
+      InAirSpeedFactor: 0.75
       InWater: true
       AutoSprint: true
       Cooldown: 800
-      Particles: 3
+    Disable:
+      Enabled: true
+      HitInterval: 100
+      HitRadius: 0.8
+      HitParticles: 15
+      Duration: 7500
+      DashTime: 1500
+      Cooldown: 25000
+      Combination:
+      - Paralyze:LEFT_CLICK
+      - Paralyze:LEFT_CLICK
+      - RapidPunch:LEFT_CLICK
+      - ChiDash:CUSTOM
+    ReflexiveStrike:
+      Enabled: true
+      HitRadius: 1.5
+      HitInterval: 100
+      Damage: 2
+      DashTime: 2000
+      Cooldown: 5000

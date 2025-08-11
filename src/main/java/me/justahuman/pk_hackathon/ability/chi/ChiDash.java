@@ -5,6 +5,7 @@ import com.projectkorra.projectkorra.ability.ChiAbility;
 import com.projectkorra.projectkorra.attribute.Attribute;
 import lombok.Getter;
 import me.justahuman.pk_hackathon.ability.DashAbility;
+import me.justahuman.pk_hackathon.ability.chi.combo.ReflexiveStrike;
 import me.justahuman.pk_hackathon.util.DashDirection;
 import org.bukkit.Color;
 import org.bukkit.Input;
@@ -29,6 +30,9 @@ public class ChiDash extends ChiAbility implements DashAbility {
         this.direction = direction;
         if (canDash(this)) {
             start();
+            if (isStarted()) {
+                new ReflexiveStrike(player);
+            }
         }
     }
 

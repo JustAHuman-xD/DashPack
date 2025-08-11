@@ -1,10 +1,13 @@
 package me.justahuman.pk_hackathon.ability.waterbending;
 
 import com.projectkorra.projectkorra.BendingPlayer;
+import com.projectkorra.projectkorra.ability.CoreAbility;
 import com.projectkorra.projectkorra.ability.WaterAbility;
 import com.projectkorra.projectkorra.attribute.Attribute;
+import com.projectkorra.projectkorra.waterbending.util.WaterReturn;
 import lombok.Getter;
 import me.justahuman.pk_hackathon.ability.DashAbility;
+import me.justahuman.pk_hackathon.ability.waterbending.combo.QuickRefill;
 import me.justahuman.pk_hackathon.util.DashDirection;
 import org.bukkit.Input;
 import org.bukkit.Particle;
@@ -20,6 +23,9 @@ public class WaterDash extends WaterAbility implements DashAbility {
     private long cooldown = getBaseCooldown();
     @Attribute(Attribute.SELF_PUSH)
     private double speed = getBaseSpeed();
+    private int waterPitchRestriction = getInt("InWaterPitchRestriction", getPitchRestriction());
+    private boolean requireWater = getBoolean("RequireWater");
+    private boolean consumeWater = getBoolean("ConsumeWater");
 
     private final Input input;
     private final DashDirection direction;
@@ -30,9 +36,21 @@ public class WaterDash extends WaterAbility implements DashAbility {
         this.direction = direction;
         if (canDash(this)) {
             start();
-            dashEffect();
-            adjustVelocity();
+            if (isStarted()) {
+                if (requireWater && consumeWater && !player.isInWaterOrRainOrBubbleColumn()) {
+                    WaterReturn.emptyWaterBottle(player);
+                }
+                new QuickRefill(player);
+            }
         }
+    }
+
+    @Override
+    public <A extends CoreAbility & DashAbility> boolean canDash(A ability) {
+        if (requireWater && !player.isInWaterOrRainOrBubbleColumn() && !WaterReturn.hasWaterBottle(player)) {
+            return false;
+        }
+        return DashAbility.super.canDash(ability);
     }
 
     @Override
@@ -54,32 +72,13 @@ public class WaterDash extends WaterAbility implements DashAbility {
     }
 
     @Override
-    public void progress() {
-        // TODO: Implement refilling water bottles/buckets when dashing through water
-        remove();
-        postDash();
-    }
-
-    @Override
     public boolean inAir() {
         return player.isInRain() || DashAbility.super.inAir();
     }
 
     @Override
     public int getPitchRestriction() {
-        // TODO: make this configurable
-        return player.isInWaterOrRainOrBubbleColumn() ? -1 : DashAbility.super.getPitchRestriction();
-    }
-
-    public double getSpeed() {
-        // TODO: make this configurable
-        return player.isInWaterOrRainOrBubbleColumn() ? speed * 2 : speed;
-    }
-
-    @Override
-    public long getCooldown() {
-        // TODO: Make this configurable
-        return player.isInWaterOrRainOrBubbleColumn() ? (long) (cooldown * 0.5) : cooldown;
+        return player.isInWaterOrRainOrBubbleColumn() ? waterPitchRestriction : DashAbility.super.getPitchRestriction();
     }
 
     @Override
@@ -89,7 +88,6 @@ public class WaterDash extends WaterAbility implements DashAbility {
 
     @Override
     public boolean tryDash(BendingPlayer player, Input input, DashDirection direction) {
-        // TODO: Require water in inventory to dash outside of water
         return new WaterDash(player.getPlayer(), input, direction).isStarted();
     }
 }

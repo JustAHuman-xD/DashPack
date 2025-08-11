@@ -14,8 +14,6 @@ import org.bukkit.Input;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-
 @Getter
 @SuppressWarnings("UnstableApiUsage")
 public class EarthLaunch extends EarthAbility implements PlayerLocationAbility, AddonComboAbility {
