@@ -230,11 +230,6 @@ public class EarthSlam extends EarthAbility implements AddonComboAbility {
     }
 
     @Override
-    public Location getLocation() {
-        return location;
-    }
-
-    @Override
     public Object createNewComboInstance(Player player) {
         return new EarthSlam(player);
     }

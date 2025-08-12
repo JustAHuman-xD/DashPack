@@ -14,3 +14,5 @@ Stuff I've realized I should PR into PK from working on this project:
 - ComboManager method for adding ability information & checking for a combo
 - MovementHandlers can override each other
 - Combo priority system & context aware validation
+- WaterAbility#isWaterbendable NPE with null block (how is it even being hit, occured with IceSpike)
+- WaterArms using only grapple uses go into negatives

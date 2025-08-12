@@ -18,6 +18,8 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Utils {
+    private static final List<BlockFace> SURROUND = new ArrayList<>(List.of(BlockFace.SOUTH, BlockFace.SOUTH_EAST, BlockFace.EAST, BlockFace.NORTH_EAST, BlockFace.NORTH, BlockFace.NORTH_WEST, BlockFace.WEST, BlockFace.SOUTH_WEST, BlockFace.UP, BlockFace.DOWN));
+    private static final List<BlockFace> CARDINAL = new ArrayList<>(List.of(BlockFace.SOUTH, BlockFace.WEST, BlockFace.NORTH, BlockFace.EAST, BlockFace.UP, BlockFace.DOWN));
     private static final List<BlockFace> AXIS = new ArrayList<>(List.of(BlockFace.SOUTH, BlockFace.WEST, BlockFace.NORTH, BlockFace.EAST));
 
     /**
@@ -106,5 +108,13 @@ public class Utils {
 
     public static List<BlockFace> getAxis() {
         return AXIS;
+    }
+
+    public static List<BlockFace> getCardinal() {
+        return CARDINAL;
+    }
+
+    public static List<BlockFace> getSurround() {
+        return SURROUND;
     }
 }

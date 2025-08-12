@@ -4,6 +4,7 @@ import com.projectkorra.projectkorra.BendingPlayer;
 import com.projectkorra.projectkorra.ability.CoreAbility;
 import com.projectkorra.projectkorra.ability.WaterAbility;
 import com.projectkorra.projectkorra.attribute.Attribute;
+import com.projectkorra.projectkorra.waterbending.blood.Bloodbending;
 import com.projectkorra.projectkorra.waterbending.util.WaterReturn;
 import lombok.Getter;
 import me.justahuman.pk_hackathon.ability.DashAbility;
@@ -86,6 +87,10 @@ public class WaterDash extends WaterAbility implements DashAbility {
 
     @Override
     public boolean tryDash(BendingPlayer player, Input input, DashDirection direction) {
+        if (player.canBloodbend() && player.getBoundAbility() instanceof Bloodbending && new BloodDash(player.getPlayer(), input, direction).isStarted()) {
+            return true;
+        }
+
         this.input = input;
         this.direction = direction;
         return new WaterDash(player.getPlayer(), input, direction).isStarted();

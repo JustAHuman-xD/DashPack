@@ -1,27 +1,25 @@
-package me.justahuman.pk_hackathon.ability.chi.combo;
+package me.justahuman.pk_hackathon.ability.waterbending.combo;
 
 import com.projectkorra.projectkorra.GeneralMethods;
-import com.projectkorra.projectkorra.ability.ChiAbility;
+import com.projectkorra.projectkorra.ability.BloodAbility;
 import com.projectkorra.projectkorra.ability.CoreAbility;
 import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.region.RegionProtection;
 import lombok.Getter;
-import me.justahuman.pk_hackathon.ability.PlayerLocationAbility;
 import me.justahuman.pk_hackathon.ability.AddonComboAbility;
+import me.justahuman.pk_hackathon.ability.PlayerLocationAbility;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-/**
- * TODO: Make this, disable, quick refill, etc, stop early if the player stops moving.
- */
 @Getter
-public class ReflexiveStrike extends ChiAbility implements PlayerLocationAbility, AddonComboAbility {
+public class BloodSiphon extends BloodAbility implements PlayerLocationAbility, AddonComboAbility {
     @Attribute(Attribute.COOLDOWN)
     private long cooldown = getBaseCooldown();
     @Attribute(Attribute.DURATION)
@@ -30,14 +28,15 @@ public class ReflexiveStrike extends ChiAbility implements PlayerLocationAbility
     private double hitRadius = getDouble("HitRadius");
     @Attribute(Attribute.DAMAGE)
     private double damage = getDouble("Damage");
+    private double healingEfficiency = getDouble("HealingEfficiency");
     private int maxHits = getInt("MaxHits", -1);
 
     private long time;
     private Set<UUID> hit = new HashSet<>();
 
-    public ReflexiveStrike(Player player) {
+    public BloodSiphon(Player player) {
         super(player);
-        if (bPlayer.canBendIgnoreBinds(this) && !CoreAbility.hasAbility(player, ReflexiveStrike.class)) {
+        if (bPlayer.canBendIgnoreBinds(this) && !CoreAbility.hasAbility(player, BloodSiphon.class)) {
             start();
         }
     }
@@ -56,7 +55,9 @@ public class ReflexiveStrike extends ChiAbility implements PlayerLocationAbility
         Predicate<Entity> predicate = GeneralMethods.getEntityFilter().and(entity -> entity != player && !hit.contains(entity.getUniqueId()) && entity instanceof LivingEntity && !RegionProtection.isRegionProtected(this, entity.getLocation()));
         for (Entity entity : player.getWorld().getNearbyEntities(player.getBoundingBox().expand(hitRadius), predicate)) {
             LivingEntity target = (LivingEntity) entity;
+            double damage = Math.min(this.damage, target.getHealth());
             target.damage(damage, player);
+            player.heal(damage * healingEfficiency, EntityRegainHealthEvent.RegainReason.MAGIC);
             hit.add(target.getUniqueId());
             bPlayer.addCooldown(this);
 
@@ -79,11 +80,11 @@ public class ReflexiveStrike extends ChiAbility implements PlayerLocationAbility
 
     @Override
     public Object createNewComboInstance(Player player) {
-        return new ReflexiveStrike(player);
+        return new BloodSiphon(player);
     }
 
     @Override
     public String getName() {
-        return "ReflexiveStrike";
+        return "BloodSiphon";
     }
 }

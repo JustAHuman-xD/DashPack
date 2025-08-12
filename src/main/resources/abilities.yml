@@ -85,6 +85,16 @@ Abilities:
       AutoSprint: true
       Cooldown: 2000
       Particles: 40
+    BloodDash:
+      Enabled: true
+      Additive: true
+      Speed: 2.5
+      InAir: true
+      InWater: true
+      Damage: 4
+      AutoSprint: true
+      Cooldown: 4000
+      Particles: 20
     QuickRefill:
       Enabled: true
       DashTime: 1500
@@ -94,6 +104,32 @@ Abilities:
       Cooldown: 20000
       Combination:
       - WaterDash:ANY
+    Shatter:
+      Enabled: true
+      Range: 3.5
+      ShatterRange: 16
+      MaxSize: 150
+      Damage: 3
+      FreezeTicks: 50
+      SoundInterval: 32
+      ShatterParticles: 4
+      Cooldown: 20000
+      Combination:
+      - IceSpike:SHIFT_DOWN
+      - PhaseChange:SHIFT_UP
+      - PhaseChange:LEFT_CLICK
+      - WaterDash:ANY,FORWARD
+    BloodSiphon:
+      Enabled: true
+      HitRadius: 1.5
+      HitInterval: 100
+      Damage: 2
+      HealingEfficiency: 0.75
+      MaxHits: -1
+      DashTime: 1750
+      Cooldown: 15000
+      Combination:
+      - BloodDash:ANY
   Earth:
     EarthDash:
       Enabled: true
@@ -171,6 +207,7 @@ Abilities:
       HitRadius: 1.5
       HitInterval: 100
       Damage: 2
+      MaxHits: -1
       DashTime: 2000
       Cooldown: 5000
       Combination:

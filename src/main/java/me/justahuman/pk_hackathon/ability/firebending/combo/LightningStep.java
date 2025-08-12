@@ -29,8 +29,6 @@ public class LightningStep extends LightningAbility implements PlayerLocationAbi
     public LightningStep(Player player) {
         super(player);
         this.lightning = new Lightning(player);
-        this.lightning.start();
-
         if (lightning.isStarted() && bPlayer.canBendIgnoreBinds(this)) {
             lightning.setCharged(true);
             player.setSneaking(false);

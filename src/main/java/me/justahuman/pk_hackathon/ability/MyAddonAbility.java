@@ -69,6 +69,7 @@ public interface MyAddonAbility extends Ability, AddonAbility {
         return ConfigManager.defaultConfig.get().getStringList(configPath() + path);
     }
 
+    // TODO: Make dash cooldowns NOT affected by avatar state
     default long getBaseCooldown() {
         return getLong("Cooldown");
     }
