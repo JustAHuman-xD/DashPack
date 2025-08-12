@@ -35,6 +35,9 @@ Abilities:
       LightningStep:
         Description: Zip through as a bolt of lightning teleporting to its end. If it ends in blocks, you'll teleport back to the start *mostly* unharmed.
         Instructions: Lightning (Left click) > Lightning (Left click) > FireDash
+      FireTunnel:
+        Description: TBA
+        Instructions: FireShield (Left click) > FireShield (Shift down) > WallOfFire (Shift up) > FireDash (Forward)
   Water:
     WaterDash:
       Description: TBA

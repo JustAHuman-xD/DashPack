@@ -46,18 +46,29 @@ Abilities:
       - Lightning:LEFT_CLICK
       - FireDash:ANY,FORWARD
     FireTunnel:
-      Enabled: true
-      Length: 15
       Width: 3
       Height: 3
-      Speed: 30
+      Enabled: true
+      Length: 15
+      Radius: 1.5
       Damage: 2
+      DamageInterval: 500
+      FireTicks: 0
+      Duration: 8000
+      Speed: 20
+      GrowRate: 6
+      DisplayInterval: 300
+      DisplayRate: 3
+      DegreesPerParticle: 8
+      ParticleOffset: 0.25
+      RingLength: 0.5
+      SoundInterval: 500
       Cooldown: 20000
       Combination:
-      - FireShield:LEFT_CLICK
-      - FireShield:SHIFT_DOWN
-      - FireWall:SHIFT_UP
-      - FireDash:ANY,FORWARD
+        - FireShield:LEFT_CLICK
+        - FireShield:SHIFT_DOWN
+        - WallOfFire:SHIFT_UP
+        - FireDash:ANY,FORWARD
   Water:
     WaterDash:
       Enabled: true

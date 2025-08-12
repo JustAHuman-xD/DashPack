@@ -58,7 +58,7 @@ public class FireDash extends FireAbility implements DashAbility {
     public boolean tryDash(BendingPlayer player, Input input, DashDirection direction) {
         this.input = input;
         this.direction = direction;
-        return usingCombo(player, LightningStep.class) // || usingCombo(player, FireTunnel.class)
+        return usingCombo(player, LightningStep.class) || usingCombo(player, FireTunnel.class)
                 || new FireDash(player.getPlayer(), input, direction).isStarted();
     }
 }

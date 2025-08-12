@@ -27,7 +27,7 @@ public class QuickRefill extends WaterAbility implements PlayerLocationAbility, 
 
     public QuickRefill(Player player) {
         super(player);
-        if (bPlayer.canBendIgnoreBinds(this) && CoreAbility.getAbility(player, QuickRefill.class) == null) {
+        if (bPlayer.canBendIgnoreBinds(this) && !CoreAbility.hasAbility(player, QuickRefill.class)) {
             start();
         }
     }

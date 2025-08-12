@@ -36,7 +36,7 @@ public class ReflexiveStrike extends ChiAbility implements PlayerLocationAbility
 
     public ReflexiveStrike(Player player) {
         super(player);
-        if (bPlayer.canBendIgnoreBinds(this) && CoreAbility.getAbility(player, ReflexiveStrike.class) == null) {
+        if (bPlayer.canBendIgnoreBinds(this) && !CoreAbility.hasAbility(player, ReflexiveStrike.class)) {
             start();
         }
     }

@@ -25,6 +25,7 @@ import org.bukkit.util.Vector;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+// TODO: Better damage / knockback
 @Getter
 public class EarthSlam extends EarthAbility implements AddonComboAbility {
     @Attribute(Attribute.COOLDOWN)

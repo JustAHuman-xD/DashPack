@@ -36,7 +36,7 @@ public class Disable extends ChiAbility implements PlayerLocationAbility, AddonC
 
     public Disable(Player player) {
         super(player);
-        if (bPlayer.canBendIgnoreBinds(this) && CoreAbility.getAbility(player, Disable.class) == null) {
+        if (bPlayer.canBendIgnoreBinds(this) && !CoreAbility.hasAbility(player, Disable.class)) {
             start();
         }
     }
