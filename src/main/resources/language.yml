@@ -42,16 +42,19 @@ Abilities:
     WaterDash:
       Description: TBA
       Instructions: TBA
+    BloodDash:
+      Description: TBA
+      Instructions: TBA
     Combo:
       QuickRefill:
         Description: TBA
         Instructions: WaterDash (In/Through water)
-      WaterRush:
+      Shatter:
         Description: TBA
-        Instructions: TBA
-      WaterWake:
+        Instructions: IceSpike (Shift down) > PhaseChange (Shift up) > WaterDash (Forward towards ice)
+      BloodSiphon:
         Description: TBA
-        Instructions: TBA
+        Instructions: BloodDash (Into/Through mob)
   Chi:
     ChiDash:
       Description: TBA
