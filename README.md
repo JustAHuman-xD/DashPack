@@ -1,1 +1,1 @@
-# Triple Thread Triad Hackathon Entry
+# DashPack - Triple Thread Triad Hackathon Entry

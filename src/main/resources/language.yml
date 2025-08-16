@@ -4,65 +4,108 @@ Board:
 Abilities:
   Air:
     AirDash:
-      Description: TBA
-      Instructions: TBA
+      Description: AirDash is a simple yet advanced airbending technique. By precisely timing a blast of air, you can propel
+        yourself in any direction, unrestricted even while midair.
+      Instructions: |2-
+
+        (Single Direction) Movement Key Down > Movement Key Up > Movement Key Down
+        (Held Directions) Sprint Key Down > Sprint Key Up > Sprint Key Down
     Combo:
       AirBreak:
-        Description: TBA
+        Description: AirBreak is an advanced technique to immediately stop all momentum while midair, resetting your fall distance.
+          It's a niche ability among airbending but a powerful one for disorienting opponents and finely controlling your position.
         Instructions: AirSuction (Left click) > AirSuction (Left click) > AirDash
       AirCrash:
-        Description: TBA
-        Instructions: Dash (Down) > AirBurst (From fall)
+        Description: AirCrash is a simple technique for amplifying the power of AirBurst. By dashing downwards
+          while midair you build more momentum, increasing the resulting AirBurst's knockback and shrinking its area of effect.
+        Instructions: AirDash (Down) > AirBurst (From fall)
   Earth:
     EarthDash:
-      Description: TEMPORARY, normal dash controls and specifically when middair, double dash down holding catapult to plummet (used for earth crash)
-      Instructions: TBA
+      Description: EarthDash is a different application of the same technique used in Catapulting. EarthDash is an ability that
+        allows you to propel yourself using the earth beneath your feet. EarthDash is best for moving horizontally while it's
+        vertical power is dampened. However, advanced benders can use EarthDash to plummet downwards while midair when close
+        above the ground, pulling themselves to the earth below with great force.
+      Instructions: |2-
+
+        (Single Direction) Movement Key Down > Movement Key Up > Movement Key Down
+        (Held Directions) Sprint Key Down > Sprint Key Up > Sprint Key Down
+        (Plummet) While Mid-Air > With Earth Close Below You > EarthDash (Down)
     Combo:
       EarthCrash:
-        Description: TBA
-        Instructions: Dash (Down) > Shockwave (From fall)
+        Description: EarthCrash is an advanced technique amplifying the power of Shockwave. By using EarthDash to plummet
+          downwards to the ground, the force of the impact is amplified, increasing the damage, knockback, and reducing the
+          area of effect of the resulting Shockwave.
+        Instructions: EarthDash (Down) > Shockwave (From fall)
       EarthLaunch:
-        Description: TBA
+        Description: EarthLaunch is a combination of Catapult and EarthDash, merging the application of both abilities to
+          launch yourself into the air and propel yourself in your dash direction with great force.
         Instructions: Catapult (Right click block) > Catapult (Right click block) > EarthDash
       EarthSlam:
-        Description: TBA
-        Instructions: EarthSmash (Right click block) > EarthSmash (Right click block) > EarthDash (Looking at raised earth)
+        Description: EarthSlam is an advanced technique that turns otherwise defensive barriers into offensive projectiles.
+          After raising earth you can use this technique to slam the earth forwards, pushing and knocking back all entities
+          in its path.
+        Instructions: EarthSmash (Right click block) > EarthSmash (Right click block) > EarthDash (Forward at raised earth)
   Fire:
     FireDash:
-      Description: TBA
-      Instructions: TBA
+      Description: FireDash is a entry-level firebending technique utilizing a blast of fire to propel yourself around. While
+        great for horizontal movement, FireDash is not as effective (but not ineffective) for vertical movement.
+      Instructions: |2-
+
+        (Single Direction) Movement Key Down > Movement Key Up > Movement Key Down
+        (Held Directions) Sprint Key Down > Sprint Key Up > Sprint Key Down
     Combo:
       LightningStep:
-        Description: Zip through as a bolt of lightning teleporting to its end. If it ends in blocks, you'll teleport back to the start *mostly* unharmed.
+        Description: LightningStep is an advanced application of the Lightning ability. A firebender can use this technique
+          to travel instantly through the bolt of lightning, teleporting to it's end. Be wary of your aim however, if the bolt
+          ends inside of a block, you won't get stuck inside but you will feel a bit of a shock.
         Instructions: Lightning (Left click) > Lightning (Left click) > FireDash
       FireTunnel:
-        Description: TBA
+        Description: FireTunnel is a simple yet advanced technique that creates a spiraling tunnel of fire in front of you. This
+          technique is great in closed spaces, allowing you to hit multiple targets and trap them in a blazing inferno.
         Instructions: FireShield (Left click) > FireShield (Shift down) > WallOfFire (Shift up) > FireDash (Forward)
   Water:
     WaterDash:
-      Description: TBA
-      Instructions: TBA
+      Description: WaterDash is one of the few waterbending abilities providing mobility. By pushing oneself with pressurized water
+        a waterbender can propel themselves around. While outside of water or rain, WaterDash may not have a huge effect, and is
+        restricted vertically, but in water or rain, WaterDash becomes an incredibly powerful tool, allowing fast and fluid movement
+        in any direction.
+      Instructions: |2-
+
+        (Single Direction) Movement Key Down > Movement Key Up > Movement Key Down
+        (Held Directions) Sprint Key Down > Sprint Key Up > Sprint Key Down
     BloodDash:
-      Description: TBA
-      Instructions: TBA
+      Description: BloodDash is a specialization of the normal WaterDash ability. By sacrificing one's own health, a waterbender can
+        propel themselves with great force under little to no restrictions.
+      Instructions: |2-
+
+        (Single Direction) Bloodbending (Selected) > Movement Key Down > Movement Key Up > Movement Key Down
+        (Held Directions) Bloodbending (Selected) > Sprint Key Down > Sprint Key Up > Sprint Key Down
     Combo:
       QuickRefill:
-        Description: TBA
+        Description: QuickRefill is a simple yet useful technique to quickly and easily refill your bottles with water.
         Instructions: WaterDash (In/Through water)
       Shatter:
-        Description: TBA
+        Description: Shatter is an advanced icebending technique taking advantage of your phase changing abilities. By bending ice
+          in a specific way, you can cause it to shatter, dealing damage to all entities inside and freezing them at the same time.
         Instructions: IceSpike (Shift down) > PhaseChange (Shift up) > WaterDash (Forward towards ice)
       BloodSiphon:
-        Description: TBA
+        Description: BloodSiphon is a powerful technique that allows you to siphon the blood of your enemies, replenishing your own health.
+          This technique is especially useful in combat, allowing you to sustain yourself while dealing damage.
         Instructions: BloodDash (Into/Through mob)
   Chi:
     ChiDash:
-      Description: TBA
-      Instructions: TBA
+      Description: ChiDash is an important technique for any chi blocker. Enabling you to dash quickly in any direction, it substantially
+        increases your mobility and allows you to quickly close the gap between you and your bending opponents.
+      Instructions: |2-
+
+        (Single Direction) Movement Key Down > Movement Key Up > Movement Key Down
+        (Held Directions) Sprint Key Down > Sprint Key Up > Sprint Key Down
     Combo:
       Disable:
-        Description: TBA
+        Description: Disable a advanced chi blocking technique utilizing a series of quick strikes to your opponent's pressure points.
+          This technique will temporarily leave your opponent stuck in place, vulnerable to follow-up attacks.
         Instructions: Paralyze (Left click) > Paralyze (Left click) > RapidPunch (Left click) > ChiDash (Into/Through mob)
       ReflexiveStrike:
-        Description: TBA
+        Description: ReflexiveStrike is a simple technique for reflexively striking your opponent when you draw close. By clearing your
+          mind and focusing on the battle, your arms will move on their own, striking your opponent without hesitation.
         Instructions: ChiDash (Into/Through mob)

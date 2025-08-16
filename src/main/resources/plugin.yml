@@ -1,7 +1,7 @@
-name: PKHackathon
+name: DashPack
 version: '1.0.0'
-main: me.justahuman.pk_hackathon.PKHackathon
+main: me.justahuman.projectkorra.dashpack.DashPack
 api-version: '1.21'
 authors: [ JustAHuman ]
 depend: [ ProjectKorra ]
-website: https://github.com/JustAHuman-xD/PKHackathon
+website: https://github.com/JustAHuman-xD/DashPack

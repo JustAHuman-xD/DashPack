@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.justahuman</groupId>
-    <artifactId>pkhackathon</artifactId>
+    <artifactId>dashpack</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>PKHackathon</name>
+    <name>DashPack</name>
 
     <properties>
         <java.version>21</java.version>
@@ -17,7 +17,7 @@
     </properties>
 
     <build>
-        <finalName>PKHackathon</finalName>
+        <finalName>DashPack</finalName>
         <defaultGoal>clean package</defaultGoal>
         <plugins>
             <plugin>

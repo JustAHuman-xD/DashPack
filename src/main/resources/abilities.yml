@@ -22,16 +22,17 @@ Abilities:
       Enabled: true
       DashTime: 1500
       RangeFactor: 0.5
-      PushFactor: 1.5
+      KnockbackFactor: 3
       DamageFactor: 1.0
       Cooldown: 20000
       Combination:
-      - AirDash:ANY
+      - AirDash:ANY,DOWN
   Fire:
     FireDash:
       Enabled: true
       Additive: true
       Speed: 1.75
+      BlueFireSpeedFactor: 1.25
       PitchRestriction: 35
       InAir: true
       InWater: false
@@ -137,6 +138,7 @@ Abilities:
       Speed: 1.5
       PitchRestriction: 25
       InAir: false
+      MaxAirHeight: 64
       InWater: false
       AutoSprint: true
       Cooldown: 2000
@@ -152,14 +154,14 @@ Abilities:
       - EarthDash:ANY
     EarthSlam:
       Enabled: true
-      SelectRange: 8
+      SelectRange: 12
       Height: 6
       Width: 6
-      PushRange: 30
+      PushRange: 32
       Speed: 20
       Gravity: true
       Damage: 5
-      Knockback: 1
+      Knockback: 2.5
       HitRange: 0.3
       MaxHits: 5
       CanHitSelf: false
@@ -176,8 +178,7 @@ Abilities:
       DamageFactor: 1.0
       Cooldown: 20000
       Combination:
-      - Catapult:LEFT_CLICK
-      - EarthDash:ANY,BACKWARD
+      - EarthDash:ANY,DOWN
   Chi:
     ChiDash:
       Enabled: true
@@ -194,7 +195,7 @@ Abilities:
       HitInterval: 100
       HitRadius: 0.8
       HitParticles: 15
-      Duration: 7500
+      Duration: 5500
       DashTime: 1500
       Cooldown: 25000
       Combination:
