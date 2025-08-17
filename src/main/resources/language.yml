@@ -14,7 +14,7 @@ Abilities:
       AirBreak:
         Description: AirBreak is an advanced technique to immediately stop all momentum while midair, resetting your fall distance.
           It's a niche ability among airbending but a powerful one for disorienting opponents and finely controlling your position.
-        Instructions: AirSuction (Left click) > AirSuction (Left click) > AirDash
+        Instructions: AirSuction (Left click) > AirSuction (Left click) > AirSuction (Left click) > AirDash
       AirCrash:
         Description: AirCrash is a simple technique for amplifying the power of AirBurst. By dashing downwards
           while midair you build more momentum, increasing the resulting AirBurst's knockback and shrinking its area of effect.

@@ -22,6 +22,7 @@ Abilities:
       Combination:
       - AirSuction:LEFT_CLICK
       - AirSuction:LEFT_CLICK
+      - AirSuction:LEFT_CLICK
       - AirDash:ANY
     AirCrash:
       Enabled: true
