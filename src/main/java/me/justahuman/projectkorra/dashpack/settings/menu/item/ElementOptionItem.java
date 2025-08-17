@@ -46,7 +46,7 @@ public class ElementOptionItem extends AbstractItem {
         }
 
         int nextIndex = (currentIndex + (clickType.isRightClick() ? -1 : 1)) % elements.size();
-        String nextElementName = elements.get(nextIndex);
+        String nextElementName = elements.get(nextIndex == -1 ? elements.size() - 1 : nextIndex);
         settings.setElement(nextElementName.equals("First") ? null : nextElementName);
         settings.save(player);
         notifyWindows();
