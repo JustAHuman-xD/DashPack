@@ -8,11 +8,12 @@ Abilities:
       InWater: false
       AutoSprint: true
       Cooldown: 1200
-      Particles: 3
+      Particles: 20
     AirBreak:
       Enabled: true
       YSpeed: 0.4
       ResetFallDistance: true
+      Particles: 20
       Sound:
         Key: "entity.breeze.land"
         Source: player
