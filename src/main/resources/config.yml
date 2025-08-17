@@ -37,7 +37,10 @@ SettingsMenu:
     Lore:
       - "&7How many ticks in between each dash input is allowed."
       - "&7A dash consists of 3 inputs, press, release, and press again."
-      - "&7If the time between any of these inputs is longer than this value, it will reset the input sequence."
+      - "&7If the time between any of these inputs is longer than this value,"
+      - "it will reset the input sequence."
+      - " "
+      - "&7Set to 0 to disable dashing."
       - " "
       - "&eLeft-Click &7to increase by &e1&7."
       - "&eRight-Click &7to decrease by &e1&7."
@@ -60,7 +63,9 @@ SettingsMenu:
     Material: "minecraft:clock"
     Name: "&fInput Ping Threshold&7: &e%value% &7ms"
     Lore:
-      - "&7When account for ping is enabled, input timeout will be increased by your ping compensation value for every %value% ms of ping."
+      - "&7When account for ping is enabled, input timeout"
+      - "will be increased by your ping compensation value"
+      - "for every %value% ms of ping."
       - " "
       - "&eLeft-Click &7to increase by &e1&7."
       - "&eRight-Click &7to decrease by &e1&7."
@@ -69,7 +74,9 @@ SettingsMenu:
     Material: "minecraft:clock"
     Name: "&fInput Ping Compensation&7: &e%value% &7ticks"
     Lore:
-      - "&7When account for ping is enabled, input timeout will be increased by %value% for every time your ping is above your threshold value."
+      - "&7When account for ping is enabled, input timeout"
+      - "will be increased by %value% for every time your"
+      - "ping is above your threshold value."
       - " "
       - "&eLeft-Click &7to increase by &e1&7."
       - "&eRight-Click &7to decrease by &e1&7."
@@ -78,7 +85,8 @@ SettingsMenu:
     Material: "minecraft:clock"
     Name: "&fMax Input Ping Compensation&7: &e%value% &7ticks"
     Lore:
-      - "&7The maximum amount of ticks that can be added to input timeout from ping compensation."
+      - "&7The maximum amount of ticks that can be added"
+      - "to input timeout from ping compensation."
       - " "
       - "&eLeft-Click &7to increase by &e1&7."
       - "&eRight-Click &7to decrease by &e1&7."

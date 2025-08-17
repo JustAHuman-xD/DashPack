@@ -32,7 +32,7 @@ public class TicksOptionItem extends AbstractItem {
             int currentValue = getter.apply(settings);
             int change = clickType.isShiftClick() ? 5 : 1;
             change *= clickType.isRightClick() ? -1 : 1;
-            setter.accept(settings, Math.max(1, currentValue + change));
+            setter.accept(settings, Math.max(0, currentValue + change));
         }
         settings.save(player);
         notifyWindows();

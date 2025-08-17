@@ -9,22 +9,25 @@ import com.projectkorra.projectkorra.ability.util.ComboManager;
 import com.projectkorra.projectkorra.util.ClickType;
 import com.projectkorra.projectkorra.util.ReflectionHandler;
 import me.justahuman.projectkorra.dashpack.ability.AddonComboAbility;
-import me.justahuman.projectkorra.dashpack.ability.DashAbility;
 import me.justahuman.projectkorra.dashpack.ability.airbending.AirDash;
 import me.justahuman.projectkorra.dashpack.ability.chi.ChiDash;
 import me.justahuman.projectkorra.dashpack.ability.earthbending.EarthDash;
 import me.justahuman.projectkorra.dashpack.ability.firebending.FireDash;
-import me.justahuman.projectkorra.dashpack.ability.waterbending.BloodDash;
 import me.justahuman.projectkorra.dashpack.ability.waterbending.WaterDash;
+import org.bukkit.Bukkit;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import sun.misc.Unsafe;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Utils {
     private static final List<BlockFace> SURROUND = new ArrayList<>(List.of(BlockFace.SOUTH, BlockFace.SOUTH_EAST, BlockFace.EAST, BlockFace.NORTH_EAST, BlockFace.NORTH, BlockFace.NORTH_WEST, BlockFace.WEST, BlockFace.SOUTH_WEST, BlockFace.UP, BlockFace.DOWN));
@@ -41,6 +44,34 @@ public class Utils {
     }
 
     /**
+     * @deprecated To be implemented in PK itself
+     * Sets combo manager to use a linked hashmap and sorts it by priorities
+     */
+    @Deprecated(forRemoval = true)
+    public static void addPriorityToComboManager() {
+        try {
+            HashMap<String, ComboManager.ComboAbilityInfo> current = ComboManager.getComboAbilities();
+            List<Map.Entry<String, ComboManager.ComboAbilityInfo>> entries = new ArrayList<>(current.entrySet());
+            entries.sort(Comparator.comparingInt(entry -> entry.getValue().getComboType() instanceof AddonComboAbility combo ? combo.getPriority() : entry.getValue().getAbilities().size()));
+            Collections.reverse(entries);
+            LinkedHashMap<String, ComboManager.ComboAbilityInfo> sortedMap = new LinkedHashMap<>();
+            entries.forEach(entry -> sortedMap.put(entry.getKey(), entry.getValue()));
+
+            Field unsafeField = Unsafe.class.getDeclaredField("theUnsafe");
+            unsafeField.setAccessible(true);
+            Unsafe unsafe = (Unsafe) unsafeField.get(null);
+            Field field = ComboManager.class.getDeclaredField("COMBO_ABILITIES");
+            Object fieldBase = unsafe.staticFieldBase(field);
+            long fieldOffset = unsafe.staticFieldOffset(field);
+            unsafe.putObject(fieldBase, fieldOffset, sortedMap);
+            ProjectKorra.plugin.getLogger().info("ComboManager has been set up with priorities. (" + ComboManager.getComboAbilities().getClass().getSimpleName() + ")");
+        } catch(Exception e) {
+            ProjectKorra.plugin.getLogger().severe("Failed to set up ComboManager with priorities. Please report this issue.");
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * @deprecated To be replaced with an official method in ComboManager
      */
     @Deprecated(forRemoval = true)
@@ -53,23 +84,19 @@ public class Utils {
             return;
         }
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (comboAbil.getComboType() instanceof Class<?> clazz) {
-                    try {
-                        ReflectionHandler.instantiateObject(clazz, player);
-                    } catch (final Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    if (comboAbil.getComboType() instanceof ComboAbility ability) {
-                        ability.createNewComboInstance(player);
-                    }
+        Bukkit.getScheduler().runTaskLater(ProjectKorra.plugin, () -> {
+            if (comboAbil.getComboType() instanceof Class<?> clazz) {
+                try {
+                    ReflectionHandler.instantiateObject(clazz, player);
+                } catch (final Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                if (comboAbil.getComboType() instanceof ComboAbility ability) {
+                    ability.createNewComboInstance(player);
                 }
             }
-
-        }.runTaskLater(ProjectKorra.plugin, 1L);
+        }, 1L);
     }
 
     /**

@@ -11,6 +11,7 @@ import me.justahuman.projectkorra.dashpack.settings.PlayerSettings;
 import me.justahuman.projectkorra.dashpack.util.DashDirection;
 import me.justahuman.projectkorra.dashpack.util.DashTap;
 import me.justahuman.projectkorra.dashpack.util.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.Input;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,7 +22,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -29,10 +29,11 @@ import java.util.UUID;
 public class MainListener implements Listener {
     private final Map<UUID, DashData> dashing = new HashMap<>();
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBendingReload(BendingReloadEvent event) {
-        DashPack.instance.reloadConfig();
         dashing.clear();
+        DashPack.instance.reloadConfig();
+        Bukkit.getScheduler().runTask(DashPack.instance, Utils::addPriorityToComboManager);
     }
 
     @EventHandler
@@ -59,6 +60,10 @@ public class MainListener implements Listener {
 
         PlayerSettings def = PlayerSettings.def();
         int timeout = settings.inputTimeout(def);
+        if (timeout == 0) {
+            return;
+        }
+
         if (settings.accountForPing(def)) {
             int ping = player.getPing();
             int pingThreshold = settings.pingThreshold(def);

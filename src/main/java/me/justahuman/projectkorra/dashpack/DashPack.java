@@ -7,6 +7,7 @@ import com.projectkorra.projectkorra.configuration.Config;
 import com.projectkorra.projectkorra.configuration.ConfigManager;
 import me.justahuman.projectkorra.dashpack.listener.MainListener;
 import me.justahuman.projectkorra.dashpack.settings.menu.PlayerSettingsMenu;
+import me.justahuman.projectkorra.dashpack.util.Utils;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -37,6 +38,8 @@ public final class DashPack extends JavaPlugin {
         manager.registerEvents(new MainListener(), this);
 
         CoreAbility.registerPluginAbilities(this, "me.justahuman.projectkorra.dashpack.ability");
+
+        getServer().getScheduler().runTaskLater(this, Utils::addPriorityToComboManager, 20L);
     }
 
     private void addAddonDefaults(Config target, String resourcePath) {

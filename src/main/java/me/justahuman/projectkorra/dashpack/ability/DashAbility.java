@@ -92,6 +92,10 @@ public interface DashAbility extends PlayerLocationAbility, PassiveAbility, MyAd
             return false;
         }
 
+        if (player.getFoodLevel() <= 6) {
+            return false;
+        }
+
         if (!player.isOnGround() && !player.isInWaterOrBubbleColumn()) {
             if (!ability.inAir()) {
                 return false;
@@ -106,10 +110,6 @@ public interface DashAbility extends PlayerLocationAbility, PassiveAbility, MyAd
                     return false;
                 }
             }
-        }
-
-        if (player.getFoodLevel() <= 6) {
-            return false;
         }
 
         return !getVelocityDirection().isZero();
@@ -273,6 +273,10 @@ public interface DashAbility extends PlayerLocationAbility, PassiveAbility, MyAd
     // ** Static Methods ** //
 
     static DashAbility get(Element element) {
+        if (element == null) {
+            return null;
+        }
+
         return (DashAbility) switch (element.getName()) {
             case "Air" -> CoreAbility.getAbility(AirDash.class);
             case "Water" -> CoreAbility.getAbility(WaterDash.class);
