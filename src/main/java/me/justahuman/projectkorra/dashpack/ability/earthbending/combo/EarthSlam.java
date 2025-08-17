@@ -103,7 +103,7 @@ public class EarthSlam extends EarthAbility implements ListenerAbility, AddonCom
         this.slamDirection = GeneralMethods.getCardinalDirection(direction);
 
         LastRaise lastRaise = LAST_RAISE.get(player.getUniqueId());
-        Vector orth = lastRaise != null && System.currentTimeMillis() - lastRaise.time < 500
+        Vector orth = lastRaise != null && System.currentTimeMillis() - lastRaise.time < getLong("RaiseEarthMemory")
                 ? lastRaise.direction : getOrth();
 
         Set<Block> missed = new LinkedHashSet<>();
@@ -138,6 +138,9 @@ public class EarthSlam extends EarthAbility implements ListenerAbility, AddonCom
 
         bPlayer.addCooldown(this);
         start();
+        if (isStarted()) {
+            player.getWorld().playSound(getSound(), player);
+        }
     }
 
     @Override
@@ -263,9 +266,6 @@ public class EarthSlam extends EarthAbility implements ListenerAbility, AddonCom
         return "EarthSlam";
     }
 
-    /**
-     * TODO: Make this method, which is in {@link RaiseEarthWall} public
-     */
     private static Vector getDegreeRoundedVector(Vector vec, double degreeIncrement) {
         if (vec == null) {
             return null;

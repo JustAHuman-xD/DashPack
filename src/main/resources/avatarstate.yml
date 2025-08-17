@@ -1,0 +1,18 @@
+Abilities:
+  Air:
+    AirDash:
+      Cooldown: x1
+  Water:
+    WaterDash:
+      Cooldown: x1
+    BloodDash:
+      Cooldown: x1
+  Earth:
+    EarthDash:
+      Cooldown: x1
+  Fire:
+    FireDash:
+      Cooldown: x1
+  Chi:
+    ChiDash:
+      Cooldown: x1

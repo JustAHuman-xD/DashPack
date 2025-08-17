@@ -25,6 +25,7 @@ public class AirBreak extends AirAbility implements PlayerLocationAbility, Addon
 
     @Override
     public void progress() {
+        player.getWorld().playSound(getSound(), player);
         GeneralMethods.setVelocity(this, player, new Vector(0, ySpeed, 0));
         if (resetFallDistance) {
             player.setFallDistance(0);

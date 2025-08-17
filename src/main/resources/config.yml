@@ -4,3 +4,95 @@ Dash:
   # If true, the dash will be forward; if false, it will not dash at all.
   EmptySprintForward: true
   PushParticles: 30
+
+SettingsMenu:
+  # The title of the settings menu, can use color codes
+  Title: "&8Dash Settings"
+  # The layout and therein height of the settings chest menu
+  # . = empty slot, E = element option, I = input timeout option, A = account for ping option, T = pint threshold option, C = ping compensation option, M = max ping compensation option
+  Layout:
+    - ". . . . . . . . ."
+    - ". E I . A T C M ."
+    - ". . . . . . . . ."
+  # Config for the item representing the element option
+  # You can use the %value% placeholder to fill in the current value
+  # of any option, this works in all config options except modeldata
+  # (meaning you could change the model based on the value).
+  _All:
+    DefaultNameSuffix: " &7(Default)"
+  Element:
+    # The Material of the item in the menu
+    Material: "minecraft:paper"
+    # The model definition of the item, defaults to the material's model
+    Model: "minecraft:paper"
+    # The custom model data of the item, omit for none
+    ModelData: -1
+    Name: "Dash Element: %value%"
+    Lore:
+      - "&7Which element's dash to use if you have multiple elements."
+      - "&7Click to cycle through your available elements."
+  InputTimeout:
+    Material: "minecraft:clock"
+    Name: "&fInput Timeout&7: &e%value% &7ticks"
+    Lore:
+      - "&7How many ticks in between each dash input is allowed."
+      - "&7A dash consists of 3 inputs, press, release, and press again."
+      - "&7If the time between any of these inputs is longer than this value, it will reset the input sequence."
+      - " "
+      - "&eLeft-Click &7to increase by &e1&7."
+      - "&eRight-Click &7to decrease by &e1&7."
+      - "&eShift-Click &7to increase/decrease by &e5&7."
+  AccountForPingTrue:
+    Material: "minecraft:green_wool"
+    Name: "&fAccount For Ping&7: &aEnabled"
+    Lore:
+      - "&7Should input timeout account for ping."
+      - " "
+      - "&eClick &7to toggle."
+  AccountForPingFalse:
+    Material: "minecraft:red_wool"
+    Name: "&fAccount For Ping&7: &cDisabled"
+    Lore:
+      - "&7Should input timeout account for ping."
+      - " "
+      - "&eClick &7to toggle."
+  InputPingThreshold:
+    Material: "minecraft:clock"
+    Name: "&fInput Ping Threshold&7: &e%value% &7ms"
+    Lore:
+      - "&7When account for ping is enabled, input timeout will be increased by your ping compensation value for every %value% ms of ping."
+      - " "
+      - "&eLeft-Click &7to increase by &e1&7."
+      - "&eRight-Click &7to decrease by &e1&7."
+      - "&eShift-Click &7to increase/decrease by &e5&7."
+  InputPingCompensation:
+    Material: "minecraft:clock"
+    Name: "&fInput Ping Compensation&7: &e%value% &7ticks"
+    Lore:
+      - "&7When account for ping is enabled, input timeout will be increased by %value% for every time your ping is above your threshold value."
+      - " "
+      - "&eLeft-Click &7to increase by &e1&7."
+      - "&eRight-Click &7to decrease by &e1&7."
+      - "&eShift-Click &7to increase/decrease by &e5&7."
+  MaxInputPingCompensation:
+    Material: "minecraft:clock"
+    Name: "&fMax Input Ping Compensation&7: &e%value% &7ticks"
+    Lore:
+      - "&7The maximum amount of ticks that can be added to input timeout from ping compensation."
+      - " "
+      - "&eLeft-Click &7to increase by &e1&7."
+      - "&eRight-Click &7to decrease by &e1&7."
+      - "&eShift-Click &7to increase/decrease by &e5&7."
+
+# Default settings for each player, can be overridden per-player using the menu from the /dashpack command.
+PlayerSettingDefaults:
+  # How many ticks in between each dash input is allowed.
+  # A dash consists of 3 inputs, press, release, and press again.
+  # If the time between any of these inputs is longer than this value, it will reset the input sequence.
+  InputTimeout: 3
+  # If true, takes the players ping and divides it by the threshold then multiplies it by compensation to add to the input timeout.
+  # This uses integer division, there is no fractional compensation.
+  AccountForPing: true
+  InputPingThreshold: 40
+  InputPingCompensation: 1
+  MaxInputPingCompensation: 4

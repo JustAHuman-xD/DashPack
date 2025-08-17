@@ -6,6 +6,7 @@ import com.projectkorra.projectkorra.ability.CoreAbility;
 import com.projectkorra.projectkorra.ability.FireAbility;
 import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.attribute.markers.DayNightFactor;
+import com.projectkorra.projectkorra.firebending.combo.FireKick;
 import com.projectkorra.projectkorra.firebending.util.FireDamageTimer;
 import com.projectkorra.projectkorra.region.RegionProtection;
 import com.projectkorra.projectkorra.util.DamageHandler;
@@ -80,6 +81,9 @@ public class FireTunnel extends FireAbility implements AddonComboAbility {
         this.direction = playerLocation.getDirection();
         this.locations.add(this.location);
         this.start();
+        if (isStarted()) {
+            player.getWorld().playSound(getSound("StartSound"), player);
+        }
     }
 
     @Override

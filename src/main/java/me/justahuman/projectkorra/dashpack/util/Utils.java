@@ -1,6 +1,7 @@
 package me.justahuman.projectkorra.dashpack.util;
 
 import com.projectkorra.projectkorra.BendingPlayer;
+import com.projectkorra.projectkorra.Element;
 import com.projectkorra.projectkorra.ProjectKorra;
 import com.projectkorra.projectkorra.ability.ComboAbility;
 import com.projectkorra.projectkorra.ability.CoreAbility;
@@ -8,6 +9,13 @@ import com.projectkorra.projectkorra.ability.util.ComboManager;
 import com.projectkorra.projectkorra.util.ClickType;
 import com.projectkorra.projectkorra.util.ReflectionHandler;
 import me.justahuman.projectkorra.dashpack.ability.AddonComboAbility;
+import me.justahuman.projectkorra.dashpack.ability.DashAbility;
+import me.justahuman.projectkorra.dashpack.ability.airbending.AirDash;
+import me.justahuman.projectkorra.dashpack.ability.chi.ChiDash;
+import me.justahuman.projectkorra.dashpack.ability.earthbending.EarthDash;
+import me.justahuman.projectkorra.dashpack.ability.firebending.FireDash;
+import me.justahuman.projectkorra.dashpack.ability.waterbending.BloodDash;
+import me.justahuman.projectkorra.dashpack.ability.waterbending.WaterDash;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -22,6 +30,15 @@ public class Utils {
     private static final List<BlockFace> SURROUND = new ArrayList<>(List.of(BlockFace.SOUTH, BlockFace.SOUTH_EAST, BlockFace.EAST, BlockFace.NORTH_EAST, BlockFace.NORTH, BlockFace.NORTH_WEST, BlockFace.WEST, BlockFace.SOUTH_WEST, BlockFace.UP, BlockFace.DOWN));
     private static final List<BlockFace> ADJACENT = new ArrayList<>(List.of(BlockFace.SOUTH, BlockFace.WEST, BlockFace.NORTH, BlockFace.EAST, BlockFace.UP, BlockFace.DOWN));
     private static final List<BlockFace> AXIS = new ArrayList<>(List.of(BlockFace.SOUTH, BlockFace.WEST, BlockFace.NORTH, BlockFace.EAST));
+
+    public static Element getFirstDashElement(BendingPlayer player) {
+        if (player.canBendIgnoreBindsCooldowns(CoreAbility.getAbility(AirDash.class))) return Element.AIR;
+        else if (player.canBendIgnoreBindsCooldowns(CoreAbility.getAbility(ChiDash.class))) return Element.CHI;
+        else if (player.canBendIgnoreBindsCooldowns(CoreAbility.getAbility(FireDash.class))) return Element.FIRE;
+        else if (player.canBendIgnoreBindsCooldowns(CoreAbility.getAbility(EarthDash.class))) return Element.EARTH;
+        else if (player.canBendIgnoreBindsCooldowns(CoreAbility.getAbility(WaterDash.class))) return Element.WATER;
+        else return null;
+    }
 
     /**
      * @deprecated To be replaced with an official method in ComboManager

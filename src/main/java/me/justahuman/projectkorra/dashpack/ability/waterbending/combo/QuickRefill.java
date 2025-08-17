@@ -5,16 +5,17 @@ import com.projectkorra.projectkorra.ability.WaterAbility;
 import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.waterbending.util.WaterReturn;
 import lombok.Getter;
+import me.justahuman.projectkorra.dashpack.ability.DashingCombo;
 import me.justahuman.projectkorra.dashpack.ability.PlayerLocationAbility;
-import me.justahuman.projectkorra.dashpack.ability.AddonComboAbility;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.util.Vector;
 
 @Getter
-public class QuickRefill extends WaterAbility implements PlayerLocationAbility, AddonComboAbility {
+public class QuickRefill extends WaterAbility implements PlayerLocationAbility, DashingCombo {
     @Attribute(Attribute.COOLDOWN)
     private long cooldown = getBaseCooldown();
     @Attribute(Attribute.DURATION)
@@ -23,11 +24,13 @@ public class QuickRefill extends WaterAbility implements PlayerLocationAbility, 
     private int maxFill = getInt("MaxFill");
     private boolean playSound = getBoolean("PlaySound");
 
+    private Vector initialVelocity;
     private long time;
 
     public QuickRefill(Player player) {
         super(player);
         if (bPlayer.canBendIgnoreBinds(this) && !CoreAbility.hasAbility(player, QuickRefill.class)) {
+            initialVelocity = player.getVelocity();
             start();
         }
     }
@@ -35,13 +38,15 @@ public class QuickRefill extends WaterAbility implements PlayerLocationAbility, 
     @Override
     public void progress() {
         long time = System.currentTimeMillis();
-        if (time - getStartTime() >= dashTime) {
-            remove();
-            return;
-        } else if (time - this.time < this.Interval) {
+        if (time - this.time < this.Interval) {
             return;
         }
         this.time = time;
+
+        if (time - getStartTime() >= dashTime || !isDashing()) {
+            remove();
+            return;
+        }
 
         PlayerInventory inventory = player.getInventory();
         if (player.isInWaterOrRainOrBubbleColumn() && inventory.contains(Material.GLASS_BOTTLE)) {

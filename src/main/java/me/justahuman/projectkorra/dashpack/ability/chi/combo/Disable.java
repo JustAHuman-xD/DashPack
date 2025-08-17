@@ -9,34 +9,38 @@ import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.region.RegionProtection;
 import com.projectkorra.projectkorra.util.MovementHandler;
 import lombok.Getter;
+import me.justahuman.projectkorra.dashpack.ability.DashingCombo;
 import me.justahuman.projectkorra.dashpack.ability.PlayerLocationAbility;
-import me.justahuman.projectkorra.dashpack.ability.AddonComboAbility;
 import org.bukkit.Particle;
-import org.bukkit.Sound;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BoundingBox;
+import org.bukkit.util.Vector;
 
 import java.util.function.Predicate;
 
 @Getter
-public class Disable extends ChiAbility implements PlayerLocationAbility, AddonComboAbility {
+public class Disable extends ChiAbility implements PlayerLocationAbility, DashingCombo {
     @Attribute(Attribute.COOLDOWN)
     private long cooldown = getBaseCooldown();
     @Attribute(Attribute.DURATION)
     private long dashTime = getLong("DashTime");
+    @Attribute(Attribute.DAMAGE)
+    private double damage = getDouble("Damage");
     private long hitInterval = getLong("HitInterval");
     private double hitRadius = getDouble("HitRadius");
     private int hitParticles = getInt("HitParticles");
     private long duration = getLong("Duration");
 
+    private Vector initialVelocity;
     private long time;
 
     public Disable(Player player) {
         super(player);
         if (bPlayer.canBendIgnoreBinds(this) && !CoreAbility.hasAbility(player, Disable.class)) {
+            initialVelocity = player.getVelocity();
             start();
         }
     }
@@ -44,13 +48,15 @@ public class Disable extends ChiAbility implements PlayerLocationAbility, AddonC
     @Override
     public void progress() {
         long time = System.currentTimeMillis();
-        if (time - getStartTime() >= dashTime) {
-            remove();
-            return;
-        } else if (time - this.time < this.hitInterval) {
+        if (time - this.time < this.hitInterval) {
             return;
         }
         this.time = time;
+
+        if (time - getStartTime() >= dashTime) {
+            remove();
+            return;
+        }
 
         Predicate<Entity> predicate = GeneralMethods.getEntityFilter().and(entity -> entity != player && entity instanceof LivingEntity && !RegionProtection.isRegionProtected(this, entity.getLocation()));
         for (Entity entity : player.getWorld().getNearbyEntities(player.getBoundingBox().expand(hitRadius), predicate)) {
@@ -64,11 +70,16 @@ public class Disable extends ChiAbility implements PlayerLocationAbility, AddonC
             BoundingBox box = target.getBoundingBox();
             MovementHandler mh = new MovementHandler(target, CoreAbility.getAbility(Disable.class));
             mh.stopWithDuration(this.duration / 1000 * 20, Element.CHI.getColor() + "* Disabled *");
-            target.getWorld().playSound(target.getLocation(), Sound.ENTITY_ENDER_DRAGON_HURT, 2, 0);
+            target.getWorld().playSound(getSound(), target);
             target.getWorld().spawnParticle(Particle.ENCHANTED_HIT, target.getLocation().add(0, target.getHeight() / 2, 0), hitParticles, box.getWidthX() / 4, box.getHeight() / 4, box.getWidthZ() / 4, 0);
+            target.damage(damage, player);
             bPlayer.addCooldown(this);
             remove();
             return;
+        }
+
+        if (!isDashing()) {
+            remove();
         }
     }
 

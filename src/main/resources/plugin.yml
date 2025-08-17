@@ -5,3 +5,14 @@ api-version: '1.21'
 authors: [ JustAHuman ]
 depend: [ ProjectKorra ]
 website: https://github.com/JustAHuman-xD/DashPack
+commands:
+  dashpack:
+    aliases: dash
+    description: Used to open or set player settings
+    permission: dashpack.menu
+    permission-message: You do not have permission to use this command.
+    usage: "Usage: /dash"
+permissions:
+  dashpack.menu:
+    description: Allows access to the player settings menu with /dash
+    default: true

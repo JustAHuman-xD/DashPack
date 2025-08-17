@@ -21,6 +21,10 @@ import java.util.List;
 public class LightningStep extends LightningAbility implements PlayerLocationAbility, AddonComboAbility {
     @Attribute(Attribute.COOLDOWN)
     private long cooldown = getBaseCooldown();
+    @Attribute(Attribute.RADIUS)
+    private double obstructedSearchRadius = getDouble("ObstructedSearchRadius");
+    @Attribute("SelfDamage")
+    private double obstructedDamage = getDouble("ObstructedDamage");
 
     private final Lightning lightning;
     private Location destination;
@@ -52,8 +56,7 @@ public class LightningStep extends LightningAbility implements PlayerLocationAbi
         destination = lightning.getDestination();
         obstructed = destination == null || !isTransparent(destination.getBlock().getRelative(BlockFace.UP));
         if (obstructed && destination != null) {
-            // todo: configurable radius
-            for (Block block : GeneralMethods.getBlocksAroundPoint(destination, 1.25)) {
+            for (Block block : GeneralMethods.getBlocksAroundPoint(destination, obstructedSearchRadius)) {
                 if (isTransparent(block.getRelative(BlockFace.UP))) {
                     destination = block.getLocation();
                     obstructed = false;
@@ -68,7 +71,7 @@ public class LightningStep extends LightningAbility implements PlayerLocationAbi
             if (!isTransparent(destination.getBlock()) && isTransparent(destination.getBlock().getRelative(BlockFace.UP, 2))) {
                 destination.add(0, 1, 0);
             } else if (isTransparent(destination.getBlock())) {
-                int yDrop = 3; // TODO: Make this configurable
+                int yDrop = getInt("MaxYDrop");
                 while (isTransparent(destination.getBlock()) && yDrop > 0) {
                     destination.add(0, -1, 0);
                     yDrop--;
@@ -85,8 +88,7 @@ public class LightningStep extends LightningAbility implements PlayerLocationAbi
     public void progress() {
         if (lightning.isRemoved() && lightning.getTasks().isEmpty()) {
             if (obstructed) {
-                // todo: configurable damage
-                DamageHandler.damageEntity(player, 4, this);
+                DamageHandler.damageEntity(player, obstructedDamage, this);
             } else {
                 player.teleport(destination);
             }

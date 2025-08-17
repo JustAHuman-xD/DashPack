@@ -8,6 +8,7 @@ import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.attribute.AttributeModification;
 import com.projectkorra.projectkorra.attribute.AttributeModifier;
 import com.projectkorra.projectkorra.event.AbilityRecalculateAttributeEvent;
+import com.projectkorra.projectkorra.event.AbilityStartEvent;
 import lombok.Getter;
 import me.justahuman.projectkorra.dashpack.DashPack;
 import me.justahuman.projectkorra.dashpack.ability.PlayerLocationAbility;
@@ -16,6 +17,7 @@ import me.justahuman.projectkorra.dashpack.ability.ListenerAbility;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 
 @Getter
 public class AirCrash extends AirAbility implements ListenerAbility, PlayerLocationAbility, AddonComboAbility {
@@ -39,39 +41,33 @@ public class AirCrash extends AirAbility implements ListenerAbility, PlayerLocat
         this.airBurst = airBurst;
         if (dashTime <= this.dashTime && bPlayer.canBendIgnoreBinds(this)) {
             start();
+            if (isStarted()) {
+                this.airBurst.setFallThreshold(0);
+                this.bPlayer.addCooldown(this);
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onAirBurst(AbilityStartEvent event) {
+        if (event.getAbility() instanceof AirBurst burst && burst.isFallBurst() && !CoreAbility.hasAbility(burst.getPlayer(), AirCrash.class)) {
+            long comboTime = checkCustomCombo(burst.getPlayer());
+            if (comboTime != -1) {
+                new AirCrash(burst.getPlayer(), burst, System.currentTimeMillis() - comboTime);
+            }
         }
     }
 
     @EventHandler
-    public void onAirBurst(AbilityRecalculateAttributeEvent event) {
-        if (event.getAbility() instanceof AirBurst burst && burst.isFallBurst()) {
-            AirCrash crash = null;
-            for (AirCrash airCrash : CoreAbility.getAbilities(burst.getPlayer(), AirCrash.class)) {
-                if (airCrash.airBurst.equals(burst)) {
-                    crash = airCrash;
-                    break;
-                }
-            }
-
-            if (crash == null) {
-                long comboTime = checkCustomCombo(burst.getPlayer());
-                if (comboTime != -1) {
-                    crash = new AirCrash(burst.getPlayer(), burst, System.currentTimeMillis() - comboTime);
-                }
-            }
-
-            if (crash != null && crash.isStarted()) {
+    public void onBlastFromBurst(AbilityRecalculateAttributeEvent event) {
+        if (event.getAbility() instanceof AirBlast blast && blast.getSource() != null) {
+            AirCrash airCrash = CoreAbility.getAbility(blast.getPlayer(), AirCrash.class);
+            if (airCrash != null && airCrash.airBurst == blast.getSource()) {
+                airCrash.removable = true;
                 switch(event.getAttribute()) {
-                    case Attribute.KNOCKBACK -> event.addModification(AttributeModification.of(AttributeModifier.MULTIPLICATION, crash.knockbackFactor, KNOCKBACK_MODIFIER));
-                    case Attribute.DAMAGE -> event.addModification(AttributeModification.of(AttributeModifier.MULTIPLICATION, crash.damageFactor, DAMAGE_MODIFIER));
-                }
-            }
-        } else if (event.getAbility() instanceof AirBlast blast && blast.getSource() != null && event.getAttribute().equals(Attribute.RANGE)) {
-            for (AirCrash airCrash : CoreAbility.getAbilities(blast.getPlayer(), AirCrash.class)) {
-                if (airCrash.airBurst.equals(blast.getSource())) {
-                    airCrash.removable = true;
-                    event.addModification(AttributeModification.of(AttributeModifier.MULTIPLICATION, airCrash.rangeFactor, RANGE_MODIFIER));
-                    break;
+                    case Attribute.RANGE -> event.addModification(AttributeModification.of(AttributeModifier.MULTIPLICATION, airCrash.rangeFactor, RANGE_MODIFIER));
+                    case Attribute.KNOCKBACK -> event.addModification(AttributeModification.of(AttributeModifier.MULTIPLICATION, airCrash.knockbackFactor, KNOCKBACK_MODIFIER));
+                    case Attribute.DAMAGE -> event.addModification(AttributeModification.of(AttributeModifier.MULTIPLICATION, airCrash.damageFactor, DAMAGE_MODIFIER));
                 }
             }
         }
@@ -79,11 +75,10 @@ public class AirCrash extends AirAbility implements ListenerAbility, PlayerLocat
 
     @Override
     public void progress() {
-        // TODO: Some effect/sound to indicate the crash
-        airBurst.setFallThreshold(-1);
-        bPlayer.addCooldown(this);
-
         if (removable || System.currentTimeMillis() - getStartTime() >= dashTime) {
+            if (removable) {
+                player.getWorld().playSound(getSound(), player);
+            }
             remove();
         }
     }

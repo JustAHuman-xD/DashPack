@@ -11,8 +11,13 @@ Abilities:
       Particles: 3
     AirBreak:
       Enabled: true
-      YSpeed: 0.1
+      YSpeed: 0.4
       ResetFallDistance: true
+      Sound:
+        Key: "entity.breeze.land"
+        Source: player
+        Volume: 2
+        Pitch: 1
       Cooldown: 7500
       Combination:
       - AirSuction:LEFT_CLICK
@@ -22,8 +27,13 @@ Abilities:
       Enabled: true
       DashTime: 1500
       RangeFactor: 0.5
-      KnockbackFactor: 3
+      KnockbackFactor: 7.5
       DamageFactor: 1.0
+      Sound:
+        Key: "entity.breeze.wind_burst"
+        Source: player
+        Volume: 3
+        Pitch: 1
       Cooldown: 20000
       Combination:
       - AirDash:ANY,DOWN
@@ -41,6 +51,9 @@ Abilities:
       Particles: 25
     LightningStep:
       Enabled: true
+      ObstructedAirSearchRadius: 1.25
+      ObstructedDamage: 4
+      MaxYDrop: 3
       Cooldown: 15000
       Combination:
       - Lightning:LEFT_CLICK
@@ -63,6 +76,11 @@ Abilities:
       DegreesPerParticle: 8
       ParticleOffset: 0.25
       RingLength: 0.5
+      StartSound:
+        Key: "item.flintandsteel.use"
+        Source: player
+        Volume: 2
+        Pitch: 1
       SoundInterval: 500
       Cooldown: 20000
       Combination:
@@ -94,6 +112,12 @@ Abilities:
       InWater: true
       Damage: 4
       AutoSprint: true
+      CancelHurtSound: true
+      Sound:
+        Key: "entity.warden.heartbeat"
+        Source: player
+        Volume: 3
+        Pitch: 0.8
       Cooldown: 4000
       Particles: 20
     QuickRefill:
@@ -112,8 +136,13 @@ Abilities:
       MaxSize: 150
       Damage: 3
       FreezeTicks: 50
-      SoundInterval: 32
       ShatterParticles: 4
+      Sound:
+        Key: "block.glass.break"
+        Source: block
+        Volume: 0.25
+        Pitch: [0.9, 1.1]
+        Interval: 32
       Cooldown: 20000
       Combination:
       - IceSpike:SHIFT_DOWN
@@ -128,7 +157,14 @@ Abilities:
       HealingEfficiency: 0.75
       MaxHits: -1
       DashTime: 1750
-      Cooldown: 15000
+      Particles: 20
+      Sound:
+        Key: "entity.squid.squirt"
+        Source: player
+        Volume: 0.4
+        Pitch: 1.4
+        Interval: 3
+      Cooldown: 12000
       Combination:
       - BloodDash:ANY
   Earth:
@@ -147,6 +183,7 @@ Abilities:
       Enabled: true
       Additive: true
       PushFactor: 4.5
+      Particles: 100
       Cooldown: 20000
       Combination:
       - Catapult:RIGHT_CLICK_BLOCK
@@ -165,6 +202,12 @@ Abilities:
       HitRange: 0.3
       MaxHits: 5
       CanHitSelf: false
+      RaiseEarthMemory: 700
+      Sound:
+        Key: "entity.lightning_bolt.impact"
+        Source: player
+        Volume: 0.8
+        Pitch: 1
       Cooldown: 15000
       Combination:
       - EarthSmash:RIGHT_CLICK_BLOCK
@@ -174,8 +217,9 @@ Abilities:
       Enabled: true
       DashTime: 1500
       RangeFactor: 0.5
-      PushFactor: 1.5
+      PushFactor: 2
       DamageFactor: 1.0
+      Particles: 400
       Cooldown: 20000
       Combination:
       - EarthDash:ANY,DOWN
@@ -189,14 +233,25 @@ Abilities:
       InAirSpeedFactor: 0.75
       InWater: true
       AutoSprint: true
+      Sound:
+        Key: "entity.goat.long_jump"
+        Source: player
+        Volume: 1
+        Pitch: 1
       Cooldown: 800
     Disable:
       Enabled: true
       HitInterval: 100
       HitRadius: 0.8
       HitParticles: 15
+      Damage: 1
       Duration: 5500
       DashTime: 1500
+      Sound:
+        Key: "entity.elder_guardian.curse"
+        Source: player
+        Volume: 0.5
+        Pitch: 1
       Cooldown: 25000
       Combination:
       - Paralyze:LEFT_CLICK
@@ -210,6 +265,11 @@ Abilities:
       Damage: 2
       MaxHits: -1
       DashTime: 2000
+      Sound:
+        Key: "entity.player.attack.knockback"
+        Source: player
+        Volume: 1
+        Pitch: 1
       Cooldown: 5000
       Combination:
       - ChiDash:ANY

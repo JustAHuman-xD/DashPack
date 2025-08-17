@@ -35,7 +35,6 @@ public class AirDash extends AirAbility implements DashAbility {
         DashAbility.super.dashEffect();
         playAirbendingParticles(getLocation(), particleCount());
         playAirbendingSound(getLocation());
-        // TODO: better sound effect
     }
 
     @Override

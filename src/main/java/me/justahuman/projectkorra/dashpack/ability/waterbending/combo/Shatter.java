@@ -19,7 +19,6 @@ import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -48,7 +47,7 @@ public class Shatter extends IceAbility implements AddonComboAbility {
     private double damage = getDouble("Damage");
     @Attribute(Attribute.DURATION)
     private int freezeTicks = getInt("FreezeTicks");
-    private int soundInterval = getInt("SoundInterval");
+    private int soundInterval = getInt("Sound.Interval");
     private int shatterParticles = getInt("ShatterParticles");
 
     private Location location;
@@ -157,7 +156,7 @@ public class Shatter extends IceAbility implements AddonComboAbility {
 
             block.getWorld().spawnParticle(Particle.BLOCK, location.toCenterLocation(), shatterParticles, 0.25, 0.25, 0.25, 0, blockData);
             if (i % soundInterval == 0) {
-                location.getWorld().playSound(location.toCenterLocation(), Sound.BLOCK_GLASS_BREAK, 0.25F, 1F + (float) (Math.random() - 0.5F) * 0.2F);
+                location.getWorld().playSound(getSound(), block.getX() + 0.5, block.getY() + 0.5, block.getZ() + 0.5);
             }
         }
     }

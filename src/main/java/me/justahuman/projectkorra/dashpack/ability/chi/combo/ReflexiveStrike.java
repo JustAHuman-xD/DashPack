@@ -6,22 +6,20 @@ import com.projectkorra.projectkorra.ability.CoreAbility;
 import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.region.RegionProtection;
 import lombok.Getter;
+import me.justahuman.projectkorra.dashpack.ability.DashingCombo;
 import me.justahuman.projectkorra.dashpack.ability.PlayerLocationAbility;
-import me.justahuman.projectkorra.dashpack.ability.AddonComboAbility;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-/**
- * TODO: Make this, disable, quick refill, etc, stop early if the player stops moving.
- */
 @Getter
-public class ReflexiveStrike extends ChiAbility implements PlayerLocationAbility, AddonComboAbility {
+public class ReflexiveStrike extends ChiAbility implements PlayerLocationAbility, DashingCombo {
     @Attribute(Attribute.COOLDOWN)
     private long cooldown = getBaseCooldown();
     @Attribute(Attribute.DURATION)
@@ -32,12 +30,14 @@ public class ReflexiveStrike extends ChiAbility implements PlayerLocationAbility
     private double damage = getDouble("Damage");
     private int maxHits = getInt("MaxHits", -1);
 
+    private Vector initialVelocity;
     private long time;
     private Set<UUID> hit = new HashSet<>();
 
     public ReflexiveStrike(Player player) {
         super(player);
         if (bPlayer.canBendIgnoreBinds(this) && !CoreAbility.hasAbility(player, ReflexiveStrike.class)) {
+            initialVelocity = player.getVelocity();
             start();
         }
     }
@@ -45,18 +45,21 @@ public class ReflexiveStrike extends ChiAbility implements PlayerLocationAbility
     @Override
     public void progress() {
         long time = System.currentTimeMillis();
-        if (time - getStartTime() >= dashTime) {
-            remove();
-            return;
-        } else if (time - this.time < this.hitInterval) {
+        if (time - this.time < this.hitInterval) {
             return;
         }
         this.time = time;
+
+        if (time - getStartTime() >= dashTime) {
+            remove();
+            return;
+        }
 
         Predicate<Entity> predicate = GeneralMethods.getEntityFilter().and(entity -> entity != player && !hit.contains(entity.getUniqueId()) && entity instanceof LivingEntity && !RegionProtection.isRegionProtected(this, entity.getLocation()));
         for (Entity entity : player.getWorld().getNearbyEntities(player.getBoundingBox().expand(hitRadius), predicate)) {
             LivingEntity target = (LivingEntity) entity;
             target.damage(damage, player);
+            player.getWorld().playSound(getSound(), player);
             hit.add(target.getUniqueId());
             bPlayer.addCooldown(this);
 
@@ -64,6 +67,10 @@ public class ReflexiveStrike extends ChiAbility implements PlayerLocationAbility
                 remove();
                 return;
             }
+        }
+
+        if (!isDashing()) {
+            remove();
         }
     }
 

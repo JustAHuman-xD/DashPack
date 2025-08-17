@@ -32,7 +32,19 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.5.3</version>
+                <version>3.6.0</version>
+                <configuration>
+                    <relocations>
+                        <relocation>
+                            <pattern>xyz.xenondevs.invui</pattern>
+                            <shadedPattern>me.justahuman.projectkorra.dashpack.invui</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>xyz.xenondevs.inventoryaccess</pattern>
+                            <shadedPattern>me.justahuman.projectkorra.dashpack.inventoryaccess</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -57,6 +69,10 @@
             <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
         <repository>
+            <id>xenondevs</id>
+            <url>https://repo.xenondevs.xyz/releases</url>
+        </repository>
+        <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
@@ -75,6 +91,21 @@
             <artifactId>projectkorra</artifactId>
             <version>v1.12.0</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>xyz.xenondevs.invui</groupId>
+            <artifactId>invui-core</artifactId>
+            <version>1.45</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>xyz.xenondevs.invui</groupId>
+            <artifactId>inventory-access-r22</artifactId>
+            <classifier>remapped-mojang</classifier>
+            <version>1.45</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>

@@ -17,3 +17,4 @@ Stuff I've realized I should PR into PK from working on this project:
 - WaterAbility#isWaterbendable NPE with null block (how is it even being hit, occured with IceSpike)
 - WaterArms using only grapple uses go into negatives
 - Make the max speed of waterspout & airspout configurable
+- No way to detect shockwave started from a fall (never calls start), also means you can't affect its attributes directly

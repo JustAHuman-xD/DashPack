@@ -4,13 +4,11 @@ import com.projectkorra.projectkorra.BendingPlayer;
 import com.projectkorra.projectkorra.ability.BloodAbility;
 import com.projectkorra.projectkorra.attribute.Attribute;
 import lombok.Getter;
-import me.justahuman.projectkorra.dashpack.DashPack;
 import me.justahuman.projectkorra.dashpack.ability.DashAbility;
 import me.justahuman.projectkorra.dashpack.util.DashDirection;
 import org.bukkit.Color;
 import org.bukkit.Input;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BoundingBox;
@@ -41,6 +39,7 @@ public class BloodDash extends BloodAbility implements DashAbility {
     @Override
     public void progress() {
         player.damage(damage, player);
+        player.getWorld().playSound(getSound(), player);
         DashAbility.super.progress();
     }
 

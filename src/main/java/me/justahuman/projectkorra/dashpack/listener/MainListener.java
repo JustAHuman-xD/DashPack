@@ -7,8 +7,10 @@ import com.projectkorra.projectkorra.event.BendingReloadEvent;
 import me.justahuman.projectkorra.dashpack.DashPack;
 import me.justahuman.projectkorra.dashpack.ability.DashAbility;
 import me.justahuman.projectkorra.dashpack.ability.MyAddonAbility;
+import me.justahuman.projectkorra.dashpack.settings.PlayerSettings;
 import me.justahuman.projectkorra.dashpack.util.DashDirection;
 import me.justahuman.projectkorra.dashpack.util.DashTap;
+import me.justahuman.projectkorra.dashpack.util.Utils;
 import org.bukkit.Input;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,10 +26,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @SuppressWarnings("UnstableApiUsage")
-public class HackathonListener implements Listener {
-    // TODO: Adjust timeout based on players ping
-    private static final int DASH_TAP_TIMEOUT = 3;
-
+public class MainListener implements Listener {
     private final Map<UUID, DashData> dashing = new HashMap<>();
 
     @EventHandler
@@ -38,7 +37,6 @@ public class HackathonListener implements Listener {
 
     @EventHandler
     public void onAbilityLoad(AbilityLoadEvent<?> event) {
-        // TODO: Make a PR that makes using CoreAbility.registerPluginAbilities() respect if an ability is an AddonAbility (it does not currently t-t)
         if (event.getLoadable() instanceof MyAddonAbility ability) {
             ability.load();
         }
@@ -52,27 +50,31 @@ public class HackathonListener implements Listener {
             return;
         }
 
-        List<Element> elements = bPlayer.getElements();
-        if (elements.isEmpty()) {
-            return;
-        }
-
-        // TODO: Support explicitly choosing which element's dash to use
-        Element chosen = elements.get(0);
+        PlayerSettings settings = PlayerSettings.get(player);
+        Element chosen = settings.element(bPlayer);
         DashAbility dashAbility = DashAbility.get(chosen);
         if (dashAbility == null) {
             return;
         }
 
-        int time = player.getTicksLived();
-        Input oldInput = player.getCurrentInput();
-        Input newInput = event.getInput();
+        PlayerSettings def = PlayerSettings.def();
+        int timeout = settings.inputTimeout(def);
+        if (settings.accountForPing(def)) {
+            int ping = player.getPing();
+            int pingThreshold = settings.pingThreshold(def);
+            int pingIncrease = settings.pingCompensation(def);
+            int maxCompensation = settings.maxPingCompensation(def);
+            timeout += Math.min(maxCompensation, (ping / pingThreshold) * pingIncrease);
+        }
 
+        int time = player.getTicksLived();
         DashData dashData = dashing.remove(player.getUniqueId());
-        if (dashData != null && time - dashData.tapTime > DASH_TAP_TIMEOUT) {
+        if (dashData != null && time - dashData.tapTime > timeout) {
             dashData = null;
         }
 
+        Input oldInput = player.getCurrentInput();
+        Input newInput = event.getInput();
         DashDirection direction = DashDirection.from(oldInput, newInput, dashData != null ? dashData.tap : null);
         if (player.isSneaking() || direction == null) {
             return;

@@ -53,6 +53,11 @@ public class EarthDash extends EarthAbility implements DashAbility {
     }
 
     @Override
+    public boolean isAdditive() {
+        return (!plummet || getPlayer().getVelocity().getY() < 0) && DashAbility.super.isAdditive();
+    }
+
+    @Override
     public void dashEffect() {
         Block beneath = getPlayer().getLocation().getBlock().getRelative(0, -1, 0);
         if (isEarthbendable(getPlayer(), getName(), beneath)) {
@@ -81,7 +86,7 @@ public class EarthDash extends EarthAbility implements DashAbility {
         this.input = input;
         this.direction = direction;
 
-        if (player.getBoundAbility() instanceof Catapult && !player.getPlayer().isOnGround()) {
+        if (!player.getPlayer().isOnGround()) {
             return new EarthDash(player.getPlayer(), input, direction, true).isStarted();
         }
 

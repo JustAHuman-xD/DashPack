@@ -33,6 +33,12 @@ public class ChiDash extends ChiAbility implements DashAbility {
     }
 
     @Override
+    public void dashEffect() {
+        DashAbility.super.dashEffect();
+        player.getWorld().playSound(getSound(), player);
+    }
+
+    @Override
     public Color getParticleColor() {
         return PARTICLE_COLOR;
     }

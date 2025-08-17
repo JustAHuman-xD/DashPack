@@ -1,18 +1,24 @@
 package me.justahuman.projectkorra.dashpack.ability.earthbending.combo;
 
+import com.destroystokyo.paper.ParticleBuilder;
 import com.projectkorra.projectkorra.ability.CoreAbility;
 import com.projectkorra.projectkorra.ability.EarthAbility;
 import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.attribute.AttributeModification;
 import com.projectkorra.projectkorra.attribute.AttributeModifier;
 import com.projectkorra.projectkorra.earthbending.Ripple;
+import com.projectkorra.projectkorra.earthbending.Shockwave;
 import com.projectkorra.projectkorra.event.AbilityRecalculateAttributeEvent;
+import com.projectkorra.projectkorra.event.AbilityStartEvent;
 import lombok.Getter;
 import me.justahuman.projectkorra.dashpack.DashPack;
 import me.justahuman.projectkorra.dashpack.ability.PlayerLocationAbility;
 import me.justahuman.projectkorra.dashpack.ability.AddonComboAbility;
 import me.justahuman.projectkorra.dashpack.ability.ListenerAbility;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Particle;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 
@@ -22,7 +28,6 @@ import java.lang.reflect.Method;
 
 @Getter
 public class EarthCrash extends EarthAbility implements ListenerAbility, PlayerLocationAbility, AddonComboAbility {
-    // TODO: PR: Ripple needs to reinitialize locations on attribute recalculation
     private static final MethodHandle INITIALIZE_LOCATIONS;
     static {
         MethodHandle handle = null;
@@ -56,7 +61,17 @@ public class EarthCrash extends EarthAbility implements ListenerAbility, PlayerL
         super(player);
         this.ripple = ripple;
         if (dashTime <= this.dashTime && bPlayer.canBendIgnoreBinds(this)) {
+            boolean first = !CoreAbility.hasAbility(player, EarthCrash.class);
             start();
+            if (isStarted() && first) {
+                Block sourceBlock = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
+                new ParticleBuilder(Particle.DUST_PILLAR)
+                        .location(sourceBlock.getLocation().add(0.5, 1, 0.5))
+                        .count(getInt("Particles")).extra(0.5)
+                        .offset(2, 0.5, 2)
+                        .data(sourceBlock.getBlockData())
+                        .spawn();
+            }
         }
     }
 
