@@ -89,7 +89,6 @@ public enum DashDirection {
         List<DashDirection> directions = new ArrayList<>();
         if (this == HELD) {
             Input input = ability.getInput();
-            int pitchRestriction = ability.getPitchRestriction();
             if (input.isForward() && !input.isBackward()) {
                 directions.addAll(FORWARD.describing(ability, player));
             } else if (input.isBackward() && !input.isForward()) {
@@ -110,7 +109,7 @@ public enum DashDirection {
         }
 
         directions.add(this);
-        BlockFace face = Utils.getClosestBlockFace(ability.getVelocityDirection(player));
+        BlockFace face = Utils.getClosestBlockFace(ability.getDirection().getVector(player, ability.getInput(), ability.getPitchRestriction()));
         switch(face) {
             case UP -> directions.add(UP);
             case DOWN -> directions.add(DOWN);

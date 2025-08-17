@@ -3,7 +3,6 @@ package me.justahuman.projectkorra.dashpack.ability.earthbending;
 import com.projectkorra.projectkorra.BendingPlayer;
 import com.projectkorra.projectkorra.ability.EarthAbility;
 import com.projectkorra.projectkorra.attribute.Attribute;
-import com.projectkorra.projectkorra.earthbending.Catapult;
 import lombok.Getter;
 import me.justahuman.projectkorra.dashpack.ability.DashAbility;
 import me.justahuman.projectkorra.dashpack.ability.earthbending.combo.EarthLaunch;
@@ -50,6 +49,11 @@ public class EarthDash extends EarthAbility implements DashAbility {
     @Override
     public Vector getVelocityDirection(Player player) {
         return plummet ? new Vector(0, -speed, 0) : DashAbility.super.getVelocityDirection(player);
+    }
+
+    @Override
+    public int getPitchRestriction() {
+        return plummet ? -1 : DashAbility.super.getPitchRestriction();
     }
 
     @Override
