@@ -33,7 +33,7 @@ public class MainListener implements Listener {
     public void onBendingReload(BendingReloadEvent event) {
         dashing.clear();
         DashPack.instance.reloadConfig();
-        Bukkit.getScheduler().runTask(DashPack.instance, Utils::addPriorityToComboManager);
+        Bukkit.getScheduler().runTaskLater(DashPack.instance, Utils::addPriorityToComboManager, 60L);
     }
 
     @EventHandler

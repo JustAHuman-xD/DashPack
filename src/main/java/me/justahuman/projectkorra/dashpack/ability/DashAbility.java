@@ -23,7 +23,9 @@ import org.bukkit.Input;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.WindCharge;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
 
@@ -126,7 +128,13 @@ public interface DashAbility extends PlayerLocationAbility, PassiveAbility, MyAd
             return false;
         }
 
-        ArrayList<ComboManager.AbilityInformation> combo = new ArrayList<>(ComboManager.getComboAbilities().get(defaultAbility.getName()).getAbilities());
+        ComboManager.ComboAbilityInfo info = ComboManager.getComboAbilities().get(defaultAbility.getName());
+        if (info == null) {
+            DashPack.instance.getLogger().warning("Combo information for " + defaultAbility.getName() + " is missing. Please report this as an issue with what was happening at the time. Reloading PK should fix it.");
+            return false;
+        }
+
+        ArrayList<ComboManager.AbilityInformation> combo = new ArrayList<>(info.getAbilities());
         if (!combo.remove(AddonComboAbility.IMPOSSIBLE)) {
             return false;
         }

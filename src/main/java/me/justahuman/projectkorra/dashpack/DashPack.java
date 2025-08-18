@@ -39,7 +39,7 @@ public final class DashPack extends JavaPlugin {
 
         CoreAbility.registerPluginAbilities(this, "me.justahuman.projectkorra.dashpack.ability");
 
-        getServer().getScheduler().runTaskLater(this, Utils::addPriorityToComboManager, 20L);
+        getServer().getScheduler().runTaskLater(this, Utils::addPriorityToComboManager, 80L);
     }
 
     private void addAddonDefaults(Config target, String resourcePath) {
