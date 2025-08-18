@@ -173,7 +173,7 @@ Abilities:
     EarthDash:
       Enabled: true
       Additive: true
-      Speed: 1.5
+      Speed: 1.65
       PitchRestriction: 25
       InAir: false
       MaxAirHeight: 64
@@ -219,8 +219,8 @@ Abilities:
       Enabled: true
       DashTime: 1500
       RangeFactor: 0.5
-      PushFactor: 2
-      DamageFactor: 1.25
+      PushFactor: 2.5
+      DamageFactor: 1.5
       Particles: 400
       Cooldown: 20000
       Combination:

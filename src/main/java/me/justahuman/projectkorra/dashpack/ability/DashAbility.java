@@ -104,7 +104,7 @@ public interface DashAbility extends PlayerLocationAbility, PassiveAbility, MyAd
             } else if (has("MaxAirHeight")) {
                 double maxAir = Math.pow(getDouble("MaxAirHeight"), 2);
                 Location location = player.getLocation();
-                while (location.distanceSquared(player.getLocation()) < maxAir && location.getBlock().isEmpty()) {
+                while (location.distanceSquared(player.getLocation()) < maxAir && (location.getBlock().isEmpty() || (!location.getBlock().isCollidable() && !location.getBlock().isLiquid()))) {
                     location = location.add(0, -1, 0);
                 }
 
