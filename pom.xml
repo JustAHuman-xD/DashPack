@@ -95,16 +95,9 @@
 
         <dependency>
             <groupId>xyz.xenondevs.invui</groupId>
-            <artifactId>invui-core</artifactId>
-            <version>1.45</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>xyz.xenondevs.invui</groupId>
-            <artifactId>inventory-access-r22</artifactId>
-            <classifier>remapped-mojang</classifier>
-            <version>1.45</version>
+            <artifactId>invui</artifactId>
+            <version>1.46</version>
+            <type>pom</type>
             <scope>compile</scope>
         </dependency>
 

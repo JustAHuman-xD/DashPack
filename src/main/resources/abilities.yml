@@ -136,7 +136,7 @@ Abilities:
       Range: 3.5
       ShatterRange: 16
       MaxSize: 150
-      Damage: 3
+      Damage: 6
       FreezeTicks: 50
       ShatterParticles: 4
       Sound:
@@ -220,7 +220,7 @@ Abilities:
       DashTime: 1500
       RangeFactor: 0.5
       PushFactor: 2
-      DamageFactor: 1.0
+      DamageFactor: 1.25
       Particles: 400
       Cooldown: 20000
       Combination:
@@ -246,7 +246,7 @@ Abilities:
       HitInterval: 100
       HitRadius: 0.8
       HitParticles: 15
-      Damage: 1
+      Damage: 2
       Duration: 5500
       DashTime: 1500
       Sound:
@@ -264,7 +264,7 @@ Abilities:
       Enabled: true
       HitRadius: 1.5
       HitInterval: 100
-      Damage: 2
+      Damage: 3
       MaxHits: -1
       DashTime: 2000
       Sound:

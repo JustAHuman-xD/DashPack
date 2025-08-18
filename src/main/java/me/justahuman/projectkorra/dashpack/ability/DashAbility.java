@@ -83,7 +83,7 @@ public interface DashAbility extends PlayerLocationAbility, PassiveAbility, MyAd
     }
 
     default <A extends CoreAbility & DashAbility> boolean canDash(A ability) {
-        if (!ability.isEnabled() || ability.getBendingPlayer().isOnCooldown("Dash") || !ability.getBendingPlayer().canBendIgnoreBindsCooldowns(ability)) {
+        if (!ability.isEnabled() || ability.getBendingPlayer().isOnCooldown("Dash") || !ability.getBendingPlayer().canBendIgnoreBindsCooldowns(ability) || ability.getBendingPlayer().isParalyzed()) {
             return false;
         }
 

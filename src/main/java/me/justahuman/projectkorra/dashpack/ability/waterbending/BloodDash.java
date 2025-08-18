@@ -6,6 +6,7 @@ import com.projectkorra.projectkorra.attribute.Attribute;
 import lombok.Getter;
 import me.justahuman.projectkorra.dashpack.ability.DashAbility;
 import me.justahuman.projectkorra.dashpack.util.DashDirection;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.Color;
 import org.bukkit.Input;
 import org.bukkit.Material;
@@ -39,7 +40,7 @@ public class BloodDash extends BloodAbility implements DashAbility {
     @Override
     public void progress() {
         player.damage(damage, player);
-        player.getWorld().playSound(getSound(), player);
+        player.playSound(getSound(), Sound.Emitter.self());
         DashAbility.super.progress();
     }
 
