@@ -2,3 +2,4 @@
 
 ### Post Hackathon TODO:
 - Continue tweaking default config (plan on making earth dash usable in water)
+- Add a way to toggle QuickRefill
